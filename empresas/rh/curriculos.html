@@ -228,7 +228,14 @@ button:disabled{
 
 <div>
 <label>Telefone</label>
-<input id="telefone">
+<input 
+  id="telefone" 
+  type="tel"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  placeholder="(77) 99999-9999"
+  required
+>
 </div>
 
 <div class="full">
@@ -330,6 +337,25 @@ btn.onclick = async () => {
   texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
   modal.classList.add("active");
 };
+
+const telInput = document.getElementById("telefone");
+
+telInput.addEventListener("input", (e) => {
+  let v = e.target.value.replace(/\D/g, "");
+
+  if (v.length > 11) v = v.slice(0,11);
+
+  if (v.length > 6) {
+    v = v.replace(/^(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+  } else if (v.length > 2) {
+    v = v.replace(/^(\d{2})(\d+)/, "($1) $2");
+  } else {
+    v = v.replace(/^(\d*)/, "($1");
+  }
+
+  e.target.value = v;
+});
+  
 </script>
 
 </body>
