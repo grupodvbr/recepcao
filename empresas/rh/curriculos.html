@@ -7,7 +7,7 @@
 
 <title>Trabalhe Conosco • Grupo DV</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -16,98 +16,68 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:#f4f6fb;
-  color:#111827;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
+  background:#f3f5f9;
+  color:#111;
 }
 
 /* HEADER */
 .header{
-  padding:12px;
   text-align:center;
-  font-weight:800;
+  padding:10px;
+  font-weight:700;
   background:#fff;
   border-bottom:1px solid #e5e7eb;
 }
 
-/* CONTAINER */
-.container{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px;
-}
-
 /* CARD */
 .card{
-  width:100%;
-  max-width:600px;
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  padding:12px;
+  max-width:520px;
+  margin:auto;
 }
 
-/* GRID */
+/* GRID SUPER COMPACTO */
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px;
+  gap:6px;
 }
 
-/* FULL */
-.full{
-  grid-column:span 2;
-}
+.full{grid-column:span 2}
 
-/* INPUTS */
+/* LABEL */
 label{
-  font-size:11px;
+  font-size:10px;
   font-weight:600;
 }
 
+/* INPUT */
 input,select,textarea{
   width:100%;
-  padding:10px;
+  padding:9px;
   border-radius:10px;
   border:1px solid #e5e7eb;
-  background:#f9fafb;
-  font-size:13px;
-}
-
-textarea{
-  resize:none;
-  height:60px;
-}
-
-input:focus,select:focus,textarea:focus{
-  outline:none;
-  border-color:#f59e0b;
   background:#fff;
+  font-size:12px;
 }
 
-/* BUTTON */
-button{
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(90deg,#f59e0b,#d97706);
-  font-weight:700;
-  color:#fff;
-  cursor:pointer;
+/* OBS */
+textarea{
+  height:45px;
+  resize:none;
+}
+
+/* FILE */
+input[type="file"]{
+  padding:6px;
 }
 
 /* PROGRESS */
 .progress{
-  height:5px;
-  background:#e5e7eb;
-  border-radius:5px;
+  height:4px;
+  background:#eee;
+  border-radius:4px;
   overflow:hidden;
-  margin-top:6px;
 }
 
 .progress span{
@@ -115,6 +85,27 @@ button{
   height:100%;
   width:0%;
   background:#f59e0b;
+}
+
+/* BOTÃO FIXO */
+.footer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  background:#fff;
+  padding:10px;
+  border-top:1px solid #ddd;
+}
+
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#f59e0b,#d97706);
+  color:#fff;
+  font-weight:700;
 }
 
 /* MODAL */
@@ -127,7 +118,6 @@ button{
   justify-content:center;
   opacity:0;
   pointer-events:none;
-  transition:.3s;
 }
 
 .modal.active{
@@ -137,20 +127,9 @@ button{
 
 .modal-box{
   background:#fff;
-  padding:20px;
-  border-radius:14px;
+  padding:18px;
+  border-radius:12px;
   text-align:center;
-  width:90%;
-  max-width:280px;
-}
-
-.modal-box h2{
-  color:#22c55e;
-}
-
-.modal-box button{
-  background:#111827;
-  margin-top:10px;
 }
 </style>
 
@@ -158,9 +137,7 @@ button{
 
 <body>
 
-<div class="header">Grupo DV • Trabalhe Conosco</div>
-
-<div class="container">
+<div class="header">Trabalhe Conosco</div>
 
 <form class="card" id="form">
 
@@ -178,8 +155,7 @@ button{
 
 <div>
 <label>Sexo</label>
-<select id="sexo" required>
-<option value="">---</option>
+<select id="sexo">
 <option>Masculino</option>
 <option>Feminino</option>
 <option>Outro</option>
@@ -188,7 +164,7 @@ button{
 
 <div>
 <label>Telefone</label>
-<input id="telefone" required>
+<input id="telefone">
 </div>
 
 <div class="full">
@@ -198,8 +174,7 @@ button{
 
 <div>
 <label>Empresa</label>
-<select id="empresa" required>
-<option value="">---</option>
+<select id="empresa">
 <option>MERCATTO DELÍCIA</option>
 <option>VILLA GOURMET</option>
 <option>PADARIA DELÍCIA</option>
@@ -210,39 +185,37 @@ button{
 
 <div>
 <label>Área</label>
-<input id="area" required>
+<input id="area">
 </div>
 
 <div class="full">
 <label>Observações</label>
-<textarea id="obs" placeholder="Algo que você acha importante..."></textarea>
+<textarea id="obs"></textarea>
 </div>
 
 <div class="full">
 <label>Currículo</label>
-<input type="file" id="arquivo" required>
+<input type="file" id="arquivo">
 </div>
 
 <div class="full">
 <div class="progress"><span id="bar"></span></div>
 </div>
 
-<div class="full">
-<button id="btn">Enviar</button>
-</div>
-
 </div>
 
 </form>
 
+<div class="footer">
+<button id="btn">Enviar Currículo</button>
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
-    <h2>✔ Enviado</h2>
+    <h3>✔ Enviado</h3>
     <p id="texto"></p>
-    <button onclick="fechar()">OK</button>
+    <button onclick="modal.classList.remove('active')">OK</button>
   </div>
 </div>
 
@@ -252,64 +225,47 @@ const client = window.supabase.createClient(
   "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
 );
 
-const form = document.getElementById("form");
-const bar = document.getElementById("bar");
 const btn = document.getElementById("btn");
+const bar = document.getElementById("bar");
 const modal = document.getElementById("modal");
 const texto = document.getElementById("texto");
 
-function fechar(){
-  modal.classList.remove("active");
-}
+btn.onclick = async () => {
 
-form.addEventListener("submit", async (e)=>{
-  e.preventDefault();
+  bar.style.width="20%";
 
-  btn.disabled = true;
-  bar.style.width = "20%";
+  const nome = nome.value;
+  const idade = parseInt(idade.value);
+  const sexo = sexo.value;
+  const telefone = telefone.value;
+  const email = email.value;
+  const empresa = empresa.value;
+  const area = area.value.toUpperCase();
+  const obs = document.getElementById("obs").value;
 
-  try{
+  const file = arquivo.files[0];
+  const fileName = Date.now()+"_"+file.name;
 
-    const nome = document.getElementById("nome").value;
-    const idade = parseInt(document.getElementById("idade").value);
-    const sexo = document.getElementById("sexo").value;
-    const telefone = document.getElementById("telefone").value;
-    const email = document.getElementById("email").value;
-    const empresa = document.getElementById("empresa").value;
-    const area = document.getElementById("area").value.toUpperCase();
-    const observacoes = document.getElementById("obs").value;
+  await client.storage.from("curriculos").upload(fileName,file);
 
-    const file = document.getElementById("arquivo").files[0];
-    const fileName = Date.now()+"_"+file.name;
+  bar.style.width="70%";
 
-    bar.style.width = "50%";
+  const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
 
-    await client.storage.from("curriculos").upload(fileName,file);
+  await client.from("curriculo_candidatos").insert({
+    nome, idade, sexo, telefone, email,
+    empresa,
+    area_interesse: area,
+    observacoes: obs,
+    arquivo_url: data.publicUrl,
+    nome_arquivo: file.name
+  });
 
-    const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
+  bar.style.width="100%";
 
-    await client.from("curriculo_candidatos").insert({
-      nome, idade, sexo, telefone, email,
-      empresa,
-      area_interesse: area,
-      observacoes,
-      arquivo_url: data.publicUrl,
-      nome_arquivo: file.name
-    });
-
-    bar.style.width = "100%";
-
-    texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
-    modal.classList.add("active");
-
-    form.reset();
-
-  }catch(err){
-    alert("Erro: "+err.message);
-  }
-
-  btn.disabled = false;
-});
+  texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
+  modal.classList.add("active");
+};
 </script>
 
 </body>
