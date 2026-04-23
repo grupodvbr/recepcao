@@ -238,7 +238,7 @@ form.addEventListener("submit", async (e)=>{
       .getPublicUrl(fileName);
 
     const { error: insertError } = await client
-      .from("curriculo_empresas")
+      .from("curriculos")
       .insert({
         nome,
         idade,
