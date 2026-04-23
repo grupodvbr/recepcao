@@ -254,7 +254,11 @@ button:disabled{
 @keyframes spin{
   to{transform:rotate(360deg);}
 }
-
+textarea::placeholder{
+  color:#9ca3af;
+  font-size:13px;
+  line-height:1.4;
+}
 
   
 </style>
@@ -322,8 +326,14 @@ button:disabled{
 </div>
 
 <div class="full">
-<label>Observações</label>
-<textarea id="obs"></textarea>
+  <label>Observações</label>
+  <small style="font-size:11px;color:#6b7280;margin-bottom:6px;display:block;">
+    Conte um pouco sobre sua experiência, disponibilidade e pontos fortes
+  </small>
+  <textarea 
+    id="obs"
+    placeholder="Ex: Já trabalhei na cozinha por 1 ano, tenho experiência com preparo de alimentos e disponibilidade integral."
+  ></textarea>
 </div>
 
 <div class="full">
