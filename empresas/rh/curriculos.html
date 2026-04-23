@@ -5,15 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<title>Trabalhe Conosco • Grupo DV</title>
+<title>Trabalhe Conosco</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -27,7 +25,7 @@ body{
   position:sticky;
   top:0;
   background:#fff;
-  padding:14px;
+  padding:16px;
   text-align:center;
   font-weight:700;
   border-bottom:1px solid #e5e7eb;
@@ -44,28 +42,35 @@ body{
 /* CARD */
 .card{
   width:100%;
-  max-width:520px;
+  max-width:900px; /* 🔥 AUMENTADO */
   background:#fff;
   border-radius:18px;
-  padding:20px;
+  padding:24px;
   box-shadow:0 10px 30px rgba(0,0,0,.06);
 }
 
-/* GRID BASE */
+/* GRID MOBILE */
 .grid{
   display:grid;
   grid-template-columns:1fr;
-  gap:12px;
+  gap:14px;
 }
 
-/* TABLET / DESKTOP */
+/* TABLET */
 @media(min-width:600px){
   .grid{
     grid-template-columns:1fr 1fr;
   }
+}
+
+/* DESKTOP GRANDE */
+@media(min-width:1000px){
+  .grid{
+    grid-template-columns:1fr 1fr 1fr; /* 🔥 3 COLUNAS */
+  }
 
   .full{
-    grid-column:span 2;
+    grid-column:span 3;
   }
 }
 
@@ -98,7 +103,7 @@ input:focus,select:focus,textarea:focus{
 /* TEXTAREA */
 textarea{
   resize:none;
-  min-height:70px;
+  min-height:80px;
 }
 
 /* FILE */
@@ -123,29 +128,26 @@ input[type="file"]{
 }
 
 /* BOTÃO */
+.footer{
+  max-width:900px;
+  margin:20px auto;
+}
+
 button{
   width:100%;
-  padding:14px;
+  padding:16px;
   border:none;
   border-radius:14px;
   background:linear-gradient(90deg,#f59e0b,#d97706);
   color:#fff;
   font-weight:700;
-  font-size:15px;
+  font-size:16px;
   cursor:pointer;
   transition:.2s;
 }
 
 button:hover{
   transform:translateY(-1px);
-}
-
-button:active{
-  transform:scale(.98);
-}
-
-button:disabled{
-  opacity:.5;
 }
 
 /* MODAL */
@@ -173,27 +175,6 @@ button:disabled{
   width:90%;
   max-width:320px;
   text-align:center;
-  animation:fade .3s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1}
-}
-
-.modal-box h2{
-  color:#22c55e;
-  margin:0;
-}
-
-.modal-box p{
-  font-size:14px;
-  margin-top:10px;
-}
-
-.modal-box button{
-  margin-top:14px;
-  background:#111827;
 }
 </style>
 
@@ -201,7 +182,7 @@ button:disabled{
 
 <body>
 
-<div class="header">Trabalhe Conosco</div>
+<div class="header">Portal de currículos</div>
 
 <form class="card" id="form">
 
@@ -222,12 +203,11 @@ button:disabled{
 <select id="sexo">
 <option>Masculino</option>
 <option>Feminino</option>
-<option>Outro</option>
 </select>
 </div>
 
 <div>
-<label>Telefone</label>
+<label>Whatsapp</label>
 <input 
   id="telefone" 
   type="tel"
@@ -239,12 +219,12 @@ button:disabled{
 </div>
 
 <div class="full">
-<label>Email</label>
+<label>E-mail</label>
 <input id="email">
 </div>
 
 <div>
-<label>Empresa</label>
+<label>Empresa que deseja trabalhar</label>
 <select id="empresa">
 <option>MERCATTO DELÍCIA</option>
 <option>VILLA GOURMET</option>
@@ -255,7 +235,7 @@ button:disabled{
 </div>
 
 <div>
-<label>Área</label>
+<label>Cargo desejado</label>
 <input id="area">
 </div>
 
@@ -265,7 +245,7 @@ button:disabled{
 </div>
 
 <div class="full">
-<label>Currículo</label>
+<label>Anexo do currículo (PDF, WORD ou PNG</label>
 <input type="file" id="arquivo">
 </div>
 
