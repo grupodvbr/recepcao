@@ -325,16 +325,16 @@ btn.onclick = async () => {
 
   bar.style.width="20%";
 
-  const nome = nome.value;
-  const idade = parseInt(idade.value);
-  const sexo = sexo.value;
-  const telefone = telefone.value;
-  const email = email.value;
-  const empresa = empresa.value;
-  const area = area.value.toUpperCase();
+const nome = document.getElementById("nome").value;
+const idade = parseInt(document.getElementById("idade").value);
+const sexo = document.getElementById("sexo").value;
+const telefone = document.getElementById("telefone").value;
+const email = document.getElementById("email").value;
+const empresa = document.getElementById("empresa").value;
+const area = document.getElementById("area").value.toUpperCase();
   const obs = document.getElementById("obs").value;
 
-  const file = arquivo.files[0];
+const file = document.getElementById("arquivo").files[0];
   const fileName = Date.now()+"_"+file.name;
 
   await client.storage.from("curriculos").upload(fileName,file);
