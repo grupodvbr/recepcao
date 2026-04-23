@@ -7,7 +7,7 @@
 
 <title>Trabalhe Conosco • Grupo DV</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -16,40 +16,46 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:#f4f6fb;
-  color:#1f2937;
+  background:linear-gradient(180deg,#f7f9fc,#eef2f7);
+  color:#111827;
 }
 
 /* HEADER */
 .header{
-  background:#fff;
   padding:18px;
   text-align:center;
   font-weight:800;
   font-size:18px;
+  background:#fff;
   border-bottom:1px solid #e5e7eb;
 }
 
 /* CONTAINER */
 .container{
   padding:18px;
-  max-width:500px;
+  max-width:520px;
   margin:auto;
 }
 
 /* CARD */
 .card{
   background:#fff;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  border-radius:20px;
+  padding:22px;
+  box-shadow:0 15px 40px rgba(0,0,0,.06);
+  animation:fade .4s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1}
 }
 
 /* TITULO */
 .title{
-  text-align:center;
-  font-weight:800;
   font-size:20px;
+  font-weight:800;
+  text-align:center;
   margin-bottom:15px;
 }
 
@@ -61,20 +67,21 @@ label{
   display:block;
 }
 
-input, select{
+input,select{
   width:100%;
-  padding:14px;
+  padding:15px;
   margin-top:6px;
-  border-radius:12px;
+  border-radius:14px;
   border:1px solid #e5e7eb;
   background:#f9fafb;
   font-size:14px;
+  transition:.2s;
 }
 
-input:focus, select:focus{
-  outline:none;
+input:focus,select:focus{
   border-color:#f59e0b;
   background:#fff;
+  outline:none;
 }
 
 /* BOTÃO */
@@ -92,8 +99,16 @@ button{
   transition:.2s;
 }
 
+button:hover{
+  transform:translateY(-1px);
+}
+
 button:active{
   transform:scale(.98);
+}
+
+button:disabled{
+  opacity:.5;
 }
 
 /* PROGRESS */
@@ -133,15 +148,27 @@ button:active{
 
 .modal-box{
   background:#fff;
-  padding:25px;
-  border-radius:16px;
+  padding:28px;
+  border-radius:18px;
   width:90%;
   max-width:320px;
   text-align:center;
+  animation:pop .3s ease;
+}
+
+@keyframes pop{
+  from{transform:scale(.9);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
 .modal-box h2{
   color:#22c55e;
+}
+
+.modal-box p{
+  margin-top:10px;
+  font-size:14px;
+  color:#374151;
 }
 
 .modal-box button{
@@ -159,7 +186,7 @@ button:active{
 <div class="container">
 <form class="card" id="form">
 
-<div class="title">Envie seu Currículo</div>
+<div class="title">Envie seu currículo</div>
 
 <label>Nome completo *</label>
 <input id="nome" required>
@@ -222,7 +249,6 @@ const client = window.supabase.createClient(
 const form = document.getElementById("form");
 const bar = document.getElementById("bar");
 const btn = document.getElementById("btn");
-
 const modal = document.getElementById("modal");
 const texto = document.getElementById("texto");
 
