@@ -215,6 +215,48 @@ button:disabled{
   margin-top:14px;
   background:#111827;
 }
+
+
+
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:14px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:9999;
+}
+
+.overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* LOADER */
+.loader{
+  width:45px;
+  height:45px;
+  border:4px solid #fff;
+  border-top:4px solid #f59e0b;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+  margin-bottom:10px;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg);}
+}
+
+
+  
 </style>
 
 </head>
@@ -320,9 +362,11 @@ const btn = document.getElementById("btn");
 const bar = document.getElementById("bar");
 const modal = document.getElementById("modal");
 const texto = document.getElementById("texto");
+  const overlay = document.getElementById("overlay");
 
 btn.onclick = async () => {
-
+overlay.classList.add("active");
+btn.disabled = true;
   bar.style.width="20%";
 
 const nome = document.getElementById("nome").value;
@@ -355,6 +399,8 @@ const file = document.getElementById("arquivo").files[0];
   bar.style.width="100%";
 
   texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
+  overlay.classList.remove("active");
+btn.disabled = false;
   modal.classList.add("active");
 };
 
@@ -377,6 +423,9 @@ telInput.addEventListener("input", (e) => {
 });
   
 </script>
-
+<div class="overlay" id="overlay">
+  <div class="loader"></div>
+  <span>Enviando currículo...</span>
+</div>
 </body>
 </html>
