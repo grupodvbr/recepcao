@@ -41,6 +41,7 @@ body{
 h1{
   text-align:center;
   color:#f59e0b;
+  margin-bottom:15px;
 }
 
 label{
@@ -72,6 +73,10 @@ button{
   cursor:pointer;
 }
 
+button:disabled{
+  opacity:.5;
+}
+
 .progress{
   height:6px;
   background:#1f2937;
@@ -85,6 +90,7 @@ button{
   height:100%;
   width:0%;
   background:#f59e0b;
+  transition:.3s;
 }
 
 /* MODAL */
@@ -116,11 +122,8 @@ button{
 .modal-box h2{
   color:#22c55e;
 }
-
-.modal-box button{
-  margin-top:20px;
-}
 </style>
+
 </head>
 
 <body>
@@ -173,7 +176,7 @@ button{
 </form>
 </div>
 
-<!-- MODAL SUCESSO -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
     <h2>✅ Enviado com sucesso!</h2>
@@ -203,47 +206,57 @@ form.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
   btn.disabled = true;
-  bar.style.width = "15%";
+  bar.style.width = "20%";
 
   try{
 
-    const nome = nome.value.trim();
-    const idadeVal = parseInt(idade.value);
-    const sexoVal = sexo.value;
-    const telefoneVal = telefone.value.trim();
-    const emailVal = email.value.trim();
-    const empresaVal = empresa.value;
-    const areaVal = area.value.toUpperCase();
+    const nomeInput = document.getElementById("nome").value.trim();
+    const idadeVal = parseInt(document.getElementById("idade").value);
+    const sexoVal = document.getElementById("sexo").value;
+    const telefoneVal = document.getElementById("telefone").value.trim();
+    const emailVal = document.getElementById("email").value.trim();
+    const empresaVal = document.getElementById("empresa").value;
+    const areaVal = document.getElementById("area").value.toUpperCase();
 
-    const file = arquivo.files[0];
-    if(!file) throw new Error("Arquivo obrigatório");
+    const file = document.getElementById("arquivo").files[0];
+    if(!file) throw new Error("Selecione um arquivo");
 
     const fileName = Date.now()+"_"+file.name;
 
     bar.style.width = "40%";
 
-    await client.storage.from("curriculos").upload(fileName,file);
+    const { error: uploadError } = await client.storage
+      .from("curriculos")
+      .upload(fileName, file);
+
+    if(uploadError) throw uploadError;
 
     bar.style.width = "70%";
 
-    const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
+    const { data } = client.storage
+      .from("curriculos")
+      .getPublicUrl(fileName);
 
-    await client.from("buffet.curriculo_candidatos").insert({
-      nome,
-      idade: idadeVal,
-      sexo: sexoVal,
-      telefone: telefoneVal,
-      email: emailVal,
-      empresa: empresaVal,
-      area_interesse: areaVal,
-      arquivo_url: data.publicUrl,
-      nome_arquivo: file.name
-    });
+    const { error } = await client
+      .from("buffet.curriculo_candidatos")
+      .insert({
+        nome: nomeInput,
+        idade: idadeVal,
+        sexo: sexoVal,
+        telefone: telefoneVal,
+        email: emailVal,
+        empresa: empresaVal,
+        area_interesse: areaVal,
+        arquivo_url: data.publicUrl,
+        nome_arquivo: file.name
+      });
+
+    if(error) throw error;
 
     bar.style.width = "100%";
 
     textoSucesso.innerHTML = `
-      Obrigado <b>${nome}</b><br>
+      Obrigado <b>${nomeInput}</b><br>
       Seu currículo foi enviado para <b>${empresaVal}</b>.
     `;
 
