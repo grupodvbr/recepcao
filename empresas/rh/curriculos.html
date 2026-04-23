@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<title>Trabalhe Conosco</title>
+<title>Trabalhe Conosco • Grupo DV</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -16,7 +16,7 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:#0b0e14;
+  background:linear-gradient(135deg,#0b0e14,#111827);
   color:#fff;
   display:flex;
   justify-content:center;
@@ -24,63 +24,86 @@ body{
   min-height:100vh;
 }
 
-.card{
+.container{
   width:100%;
-  max-width:500px;
+  max-width:520px;
+  padding:20px;
+}
+
+.card{
   background:#121826;
-  border-radius:18px;
+  border-radius:20px;
   padding:28px;
-  box-shadow:0 20px 50px rgba(0,0,0,.6);
+  box-shadow:0 25px 60px rgba(0,0,0,.7);
+  border:1px solid #1f2937;
 }
 
 h1{
   text-align:center;
-  margin-bottom:20px;
+  margin-bottom:10px;
   color:#f59e0b;
+  font-weight:800;
+}
+
+.sub{
+  text-align:center;
+  font-size:13px;
+  color:#9ca3af;
+  margin-bottom:20px;
 }
 
 label{
   display:block;
   margin-top:12px;
   font-weight:600;
+  font-size:13px;
 }
 
 input, select{
   width:100%;
-  padding:12px;
+  padding:13px;
   margin-top:6px;
-  border-radius:10px;
+  border-radius:12px;
   border:1px solid #1f2937;
   background:#0b0e14;
   color:#fff;
+  font-size:14px;
+}
+
+input:focus,select:focus{
+  border-color:#f59e0b;
+  outline:none;
 }
 
 button{
   width:100%;
-  padding:14px;
-  margin-top:20px;
+  padding:15px;
+  margin-top:22px;
   border:none;
-  border-radius:12px;
+  border-radius:14px;
   background:linear-gradient(90deg,#f59e0b,#d97706);
-  font-weight:bold;
+  font-weight:700;
+  font-size:15px;
   color:#000;
   cursor:pointer;
+  transition:.2s;
 }
 
-.msg{
-  text-align:center;
-  margin-top:12px;
+button:hover{
+  transform:translateY(-1px);
 }
 
-.ok{color:#22c55e}
-.err{color:#ef4444}
+button:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
 
 .progress{
   height:6px;
   background:#1f2937;
   border-radius:6px;
   overflow:hidden;
-  margin-top:10px;
+  margin-top:12px;
 }
 
 .progress span{
@@ -88,61 +111,85 @@ button{
   height:100%;
   width:0%;
   background:#f59e0b;
+  transition:.3s;
+}
+
+.msg{
+  text-align:center;
+  margin-top:15px;
+  font-size:14px;
+}
+
+.ok{color:#22c55e}
+.err{color:#ef4444}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  margin-top:20px;
+  color:#6b7280;
 }
 </style>
+
 </head>
 
 <body>
 
-<form class="card" id="form">
+<div class="container">
+  <form class="card" id="form">
 
-<h1>Envie seu Currículo</h1>
+    <h1>Trabalhe Conosco</h1>
+    <div class="sub">Grupo DV • Envie seu currículo</div>
 
-<label>Nome *</label>
-<input id="nome" required>
+    <label>Nome completo *</label>
+    <input id="nome" required>
 
-<label>Idade *</label>
-<input id="idade" type="number" required>
+    <label>Idade *</label>
+    <input id="idade" type="number" required>
 
-<label>Sexo *</label>
-<select id="sexo" required>
-<option value="">Selecione</option>
-<option>Masculino</option>
-<option>Feminino</option>
-</select>
+    <label>Sexo *</label>
+    <select id="sexo" required>
+      <option value="">Selecione</option>
+      <option>Masculino</option>
+      <option>Feminino</option>
+      <option>Outro</option>
+    </select>
 
-<label>Telefone *</label>
-<input id="telefone" required>
+    <label>Telefone *</label>
+    <input id="telefone" required>
 
-<label>Email</label>
-<input id="email">
+    <label>Email</label>
+    <input id="email">
 
-<label>Empresa *</label>
-<select id="empresa" required>
-<option value="">Selecione</option>
-<option>MERCATTO DELÍCIA</option>
-<option>VILLA GOURMET</option>
-<option>PADARIA DELÍCIA</option>
-<option>M.KIDS</option>
-<option>DELÍCIA GOURMET</option>
-</select>
+    <label>Empresa *</label>
+    <select id="empresa" required>
+      <option value="">Selecione</option>
+      <option>MERCATTO DELÍCIA</option>
+      <option>VILLA GOURMET</option>
+      <option>PADARIA DELÍCIA</option>
+      <option>M.KIDS</option>
+      <option>DELÍCIA GOURMET</option>
+    </select>
 
-<label>Área de Interesse *</label>
-<input id="area" placeholder="EX: GARÇOM, COZINHA..." required>
+    <label>Área de Interesse *</label>
+    <input id="area" placeholder="EX: GARÇOM, COZINHA..." required>
 
-<label>Currículo *</label>
-<input type="file" id="arquivo" required>
+    <label>Currículo *</label>
+    <input type="file" id="arquivo" required>
 
-<div class="progress"><span id="bar"></span></div>
+    <div class="progress"><span id="bar"></span></div>
 
-<button>Enviar Currículo</button>
+    <button id="btn">Enviar Currículo</button>
 
-<div id="msg" class="msg"></div>
+    <div id="msg" class="msg"></div>
 
-</form>
+  </form>
+
+  <div class="footer">© Grupo DV • Sistema de Recrutamento</div>
+</div>
 
 <script>
-const supabase = window.supabase.createClient(
+const client = window.supabase.createClient(
   "https://dxkszikemntfusfyrzos.supabase.co",
   "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
 );
@@ -150,73 +197,75 @@ const supabase = window.supabase.createClient(
 const form = document.getElementById("form");
 const msg = document.getElementById("msg");
 const bar = document.getElementById("bar");
+const btn = document.getElementById("btn");
 
 form.addEventListener("submit", async (e)=>{
   e.preventDefault();
 
+  btn.disabled = true;
   msg.textContent = "Enviando...";
-  bar.style.width = "20%";
+  msg.className = "msg";
 
-  const nome = nomeInput.value;
-  const idade = idade.value;
-  const sexo = sexo.value;
-  const telefone = telefone.value;
-  const email = emailInput.value;
-  const empresa = empresaSelect.value;
-  let area = areaInput.value.toUpperCase();
+  bar.style.width = "15%";
 
-  const file = arquivo.files[0];
+  try{
 
-  // Upload arquivo
-  const fileName = Date.now() + "_" + file.name;
+    const nome = document.getElementById("nome").value.trim();
+    const idade = parseInt(document.getElementById("idade").value);
+    const sexo = document.getElementById("sexo").value;
+    const telefone = document.getElementById("telefone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const empresa = document.getElementById("empresa").value;
+    const area = document.getElementById("area").value.trim().toUpperCase();
+    const file = document.getElementById("arquivo").files[0];
 
-  bar.style.width = "40%";
+    if(!file) throw new Error("Selecione um arquivo");
 
-  const { data: upload, error: errUpload } = await supabase
-    .storage
-    .from("curriculos")
-    .upload(fileName, file);
+    const fileName = Date.now() + "_" + file.name;
 
-  if(errUpload){
-    msg.textContent = "Erro upload";
-    msg.className="msg err";
-    return;
+    bar.style.width = "40%";
+
+    const { error: uploadError } = await client.storage
+      .from("curriculos")
+      .upload(fileName, file);
+
+    if(uploadError) throw uploadError;
+
+    bar.style.width = "70%";
+
+    const { data: urlData } = client.storage
+      .from("curriculos")
+      .getPublicUrl(fileName);
+
+    const { error: insertError } = await client
+      .from("curriculo_empresas")
+      .insert({
+        nome,
+        idade,
+        sexo,
+        telefone,
+        email,
+        empresa,
+        area_interesse: area,
+        arquivo_url: urlData.publicUrl,
+        nome_arquivo: file.name
+      });
+
+    if(insertError) throw insertError;
+
+    bar.style.width = "100%";
+
+    msg.innerHTML = `✅ Obrigado <b>${nome}</b>!<br>Seu currículo foi enviado para <b>${empresa}</b>.`;
+    msg.className = "msg ok";
+
+    form.reset();
+
+  }catch(err){
+    msg.textContent = "Erro: " + err.message;
+    msg.className = "msg err";
   }
 
-  bar.style.width = "70%";
-
-  const { data: urlData } = supabase
-    .storage
-    .from("curriculos")
-    .getPublicUrl(fileName);
-
-  // Salvar no banco
-  const { error } = await supabase
-    .from("curriculo_empresas")
-    .insert({
-      nome,
-      idade,
-      sexo,
-      telefone,
-      email,
-      empresa,
-      area_interesse: area,
-      arquivo_url: urlData.publicUrl,
-      nome_arquivo: file.name
-    });
-
-  if(error){
-    msg.textContent = "Erro ao salvar";
-    msg.className="msg err";
-    return;
-  }
-
-  bar.style.width = "100%";
-
-  msg.innerHTML = `✅ Obrigado <b>${nome}</b>!<br>Seu currículo foi enviado para <b>${empresa}</b>.`;
-  msg.className="msg ok";
-
-  form.reset();
+  btn.disabled = false;
 });
 </script>
 
