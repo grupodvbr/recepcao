@@ -16,7 +16,7 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:#f4f6fb;
+  background:linear-gradient(135deg,#eef2f7,#f8fafc);
   color:#111827;
 }
 
@@ -25,48 +25,51 @@ body{
   position:sticky;
   top:0;
   background:#fff;
-  padding:16px;
+  padding:18px;
   text-align:center;
   font-weight:700;
+  font-size:18px;
   border-bottom:1px solid #e5e7eb;
   z-index:10;
 }
 
-/* CONTAINER CENTRAL */
-.container{
+/* WRAPPER CENTRAL */
+.wrapper{
+  min-height:calc(100vh - 70px);
   display:flex;
+  align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:30px 20px;
 }
 
 /* CARD */
 .card{
   width:100%;
-  max-width:900px; /* 🔥 AUMENTADO */
+  max-width:1000px;
   background:#fff;
-  border-radius:18px;
-  padding:24px;
-  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.08);
 }
 
-/* GRID MOBILE */
+/* GRID BASE */
 .grid{
   display:grid;
   grid-template-columns:1fr;
-  gap:14px;
+  gap:16px;
 }
 
 /* TABLET */
-@media(min-width:600px){
+@media(min-width:700px){
   .grid{
     grid-template-columns:1fr 1fr;
   }
 }
 
-/* DESKTOP GRANDE */
-@media(min-width:1000px){
+/* DESKTOP */
+@media(min-width:1100px){
   .grid{
-    grid-template-columns:1fr 1fr 1fr; /* 🔥 3 COLUNAS */
+    grid-template-columns:1fr 1fr 1fr;
   }
 
   .full{
@@ -78,15 +81,15 @@ body{
 label{
   font-size:12px;
   font-weight:600;
-  margin-bottom:4px;
+  margin-bottom:5px;
   display:block;
 }
 
 /* INPUTS */
 input,select,textarea{
   width:100%;
-  padding:12px;
-  border-radius:12px;
+  padding:13px;
+  border-radius:14px;
   border:1px solid #e5e7eb;
   background:#f9fafb;
   font-size:14px;
@@ -98,17 +101,18 @@ input:focus,select:focus,textarea:focus{
   outline:none;
   border-color:#f59e0b;
   background:#fff;
+  box-shadow:0 0 0 2px rgba(245,158,11,0.15);
 }
 
 /* TEXTAREA */
 textarea{
   resize:none;
-  min-height:80px;
+  min-height:90px;
 }
 
 /* FILE */
 input[type="file"]{
-  padding:10px;
+  padding:12px;
 }
 
 /* PROGRESS */
@@ -129,15 +133,15 @@ input[type="file"]{
 
 /* BOTÃO */
 .footer{
-  max-width:900px;
+  max-width:1000px;
   margin:20px auto;
 }
 
 button{
   width:100%;
-  padding:16px;
+  padding:18px;
   border:none;
-  border-radius:14px;
+  border-radius:16px;
   background:linear-gradient(90deg,#f59e0b,#d97706);
   color:#fff;
   font-weight:700;
@@ -147,7 +151,8 @@ button{
 }
 
 button:hover{
-  transform:translateY(-1px);
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(245,158,11,.3);
 }
 
 /* MODAL */
@@ -170,11 +175,15 @@ button:hover{
 
 .modal-box{
   background:#fff;
-  padding:24px;
-  border-radius:16px;
+  padding:26px;
+  border-radius:18px;
   width:90%;
-  max-width:320px;
+  max-width:340px;
   text-align:center;
+}
+
+.modal-box h3{
+  color:#22c55e;
 }
 </style>
 
@@ -226,11 +235,11 @@ button:hover{
 <div>
 <label>Empresa que deseja trabalhar</label>
 <select id="empresa">
-<option>MERCATTO DELÍCIA</option>
-<option>VILLA GOURMET</option>
-<option>PADARIA DELÍCIA</option>
-<option>M.KIDS</option>
-<option>DELÍCIA GOURMET</option>
+<option>MERCATTO DELÍCIA (Barreiras)</option>
+<option>VILLA GOURMET(Luis Eduardo)</option>
+<option>PADARIA DELÍCIA (Barreiras)</option>
+<option>M.KIDS (Barreiras)</option>
+<option>DELÍCIA GOURMET (Barreiras)</option>
 </select>
 </div>
 
