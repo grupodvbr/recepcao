@@ -350,6 +350,11 @@ button:disabled{
     <p id="texto"></p>
     <button onclick="modal.classList.remove('active')">OK</button>
   </div>
+</div> <!-- MODAL -->
+
+<div class="overlay" id="overlay">
+  <div class="loader"></div>
+  <span>Enviando currículo...</span>
 </div>
 
 <script>
@@ -365,45 +370,66 @@ const texto = document.getElementById("texto");
   const overlay = document.getElementById("overlay");
 
 btn.onclick = async () => {
-overlay.classList.add("active");
-btn.disabled = true;
-  bar.style.width="20%";
 
-const nome = document.getElementById("nome").value;
-const idade = parseInt(document.getElementById("idade").value);
-const sexo = document.getElementById("sexo").value;
-const telefone = document.getElementById("telefone").value;
-const email = document.getElementById("email").value;
-const empresa = document.getElementById("empresa").value;
-const area = document.getElementById("area").value.toUpperCase();
-  const obs = document.getElementById("obs").value;
+  overlay.classList.add("active");
+  btn.disabled = true;
+  bar.style.width = "20%";
 
-const file = document.getElementById("arquivo").files[0];
-  const fileName = Date.now()+"_"+file.name;
+  try{
 
-  await client.storage.from("curriculos").upload(fileName,file);
+    const nome = document.getElementById("nome").value;
+    const idade = parseInt(document.getElementById("idade").value) || 0;
+    const sexo = document.getElementById("sexo").value;
+    const telefone = document.getElementById("telefone").value.replace(/\D/g,"");
+    const email = document.getElementById("email").value;
+    const empresa = document.getElementById("empresa").value;
+    const area = document.getElementById("area").value.toUpperCase();
+    const obs = document.getElementById("obs").value;
 
-  bar.style.width="70%";
+    const file = document.getElementById("arquivo").files[0];
 
-  const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
+    if(!file){
+  alert("Selecione um currículo");
+  throw new Error("Arquivo não selecionado");
+}
 
-  await client.from("curriculo_candidatos").insert({
-    nome, idade, sexo, telefone, email,
-    empresa,
-    area_interesse: area,
-    observacoes: obs,
-    arquivo_url: data.publicUrl,
-    nome_arquivo: file.name
-  });
+    const fileName = Date.now()+"_"+file.name;
 
-  bar.style.width="100%";
+    // upload
+    await client.storage.from("curriculos").upload(fileName,file);
 
-  texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
-  overlay.classList.remove("active");
-btn.disabled = false;
-  modal.classList.add("active");
+    bar.style.width = "70%";
+
+    const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
+
+    // insert
+    const { error } = await client.from("curriculo_candidatos").insert({
+      nome,
+      idade,
+      sexo,
+      telefone,
+      email,
+      empresa,
+      area_interesse: area,
+      observacoes: obs,
+      arquivo_url: data.publicUrl,
+      nome_arquivo: file.name
+    });
+
+    if(error) throw error;
+
+    bar.style.width = "100%";
+
+    texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
+    modal.classList.add("active");
+
+  }catch(err){
+    alert("Erro: " + err.message);
+  }finally{
+    overlay.classList.remove("active");
+    btn.disabled = false;
+  }
 };
-
 const telInput = document.getElementById("telefone");
 
 telInput.addEventListener("input", (e) => {
@@ -423,9 +449,6 @@ telInput.addEventListener("input", (e) => {
 });
   
 </script>
-<div class="overlay" id="overlay">
-  <div class="loader"></div>
-  <span>Enviando currículo...</span>
-</div>
+
 </body>
 </html>
