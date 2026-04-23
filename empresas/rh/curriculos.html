@@ -420,9 +420,15 @@ btn.onclick = async () => {
 
     bar.style.width = "100%";
 
-    texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
-    modal.classList.add("active");
+  texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
+modal.classList.add("active");
 
+/* 🔥 LIMPAR FORMULÁRIO */
+document.getElementById("form").reset();
+bar.style.width = "0%";
+
+
+    
   }catch(err){
     alert("Erro: " + err.message);
   }finally{
