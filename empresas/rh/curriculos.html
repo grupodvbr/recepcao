@@ -16,70 +16,90 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(135deg,#0b0e14,#111827);
-  color:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+  background:#f4f6fb;
+  color:#1f2937;
 }
 
-.container{
-  width:100%;
-  max-width:520px;
-  padding:20px;
-}
-
-.card{
-  background:#121826;
-  border-radius:20px;
-  padding:28px;
-  box-shadow:0 25px 60px rgba(0,0,0,.7);
-  border:1px solid #1f2937;
-}
-
-h1{
+/* HEADER */
+.header{
+  background:#fff;
+  padding:18px;
   text-align:center;
-  color:#f59e0b;
+  font-weight:800;
+  font-size:18px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+/* CONTAINER */
+.container{
+  padding:18px;
+  max-width:500px;
+  margin:auto;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+/* TITULO */
+.title{
+  text-align:center;
+  font-weight:800;
+  font-size:20px;
   margin-bottom:15px;
 }
 
+/* INPUTS */
 label{
-  display:block;
-  margin-top:12px;
-  font-weight:600;
   font-size:13px;
+  font-weight:600;
+  margin-top:12px;
+  display:block;
 }
 
 input, select{
   width:100%;
-  padding:13px;
+  padding:14px;
   margin-top:6px;
   border-radius:12px;
-  border:1px solid #1f2937;
-  background:#0b0e14;
-  color:#fff;
+  border:1px solid #e5e7eb;
+  background:#f9fafb;
+  font-size:14px;
 }
 
+input:focus, select:focus{
+  outline:none;
+  border-color:#f59e0b;
+  background:#fff;
+}
+
+/* BOTÃO */
 button{
   width:100%;
-  padding:15px;
-  margin-top:22px;
+  padding:16px;
+  margin-top:18px;
   border:none;
   border-radius:14px;
   background:linear-gradient(90deg,#f59e0b,#d97706);
   font-weight:700;
-  color:#000;
+  font-size:15px;
+  color:#fff;
   cursor:pointer;
+  transition:.2s;
 }
 
-button:disabled{
-  opacity:.5;
+button:active{
+  transform:scale(.98);
 }
 
+/* PROGRESS */
 .progress{
   height:6px;
-  background:#1f2937;
+  background:#e5e7eb;
   border-radius:6px;
   overflow:hidden;
   margin-top:12px;
@@ -97,7 +117,7 @@ button:disabled{
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.4);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -112,15 +132,21 @@ button:disabled{
 }
 
 .modal-box{
-  background:#121826;
-  padding:30px;
+  background:#fff;
+  padding:25px;
   border-radius:16px;
-  text-align:center;
+  width:90%;
   max-width:320px;
+  text-align:center;
 }
 
 .modal-box h2{
   color:#22c55e;
+}
+
+.modal-box button{
+  background:#111827;
+  margin-top:15px;
 }
 </style>
 
@@ -128,12 +154,14 @@ button:disabled{
 
 <body>
 
+<div class="header">Grupo DV • Trabalhe Conosco</div>
+
 <div class="container">
 <form class="card" id="form">
 
-<h1>Trabalhe Conosco</h1>
+<div class="title">Envie seu Currículo</div>
 
-<label>Nome *</label>
+<label>Nome completo *</label>
 <input id="nome" required>
 
 <label>Idade *</label>
@@ -163,8 +191,8 @@ button:disabled{
 <option>DELÍCIA GOURMET</option>
 </select>
 
-<label>Área *</label>
-<input id="area" required>
+<label>Área de Interesse *</label>
+<input id="area" required placeholder="EX: GARÇOM, COZINHA...">
 
 <label>Currículo *</label>
 <input type="file" id="arquivo" required>
@@ -179,9 +207,9 @@ button:disabled{
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
-    <h2>✅ Enviado com sucesso!</h2>
-    <p id="textoSucesso"></p>
-    <button onclick="fecharModal()">Fechar</button>
+    <h2>✔ Enviado com sucesso</h2>
+    <p id="texto"></p>
+    <button onclick="fechar()">Fechar</button>
   </div>
 </div>
 
@@ -196,9 +224,9 @@ const bar = document.getElementById("bar");
 const btn = document.getElementById("btn");
 
 const modal = document.getElementById("modal");
-const textoSucesso = document.getElementById("textoSucesso");
+const texto = document.getElementById("texto");
 
-function fecharModal(){
+function fechar(){
   modal.classList.remove("active");
 }
 
@@ -210,61 +238,42 @@ form.addEventListener("submit", async (e)=>{
 
   try{
 
-    const nomeInput = document.getElementById("nome").value.trim();
-    const idadeVal = parseInt(document.getElementById("idade").value);
-    const sexoVal = document.getElementById("sexo").value;
-    const telefoneVal = document.getElementById("telefone").value.trim();
-    const emailVal = document.getElementById("email").value.trim();
-    const empresaVal = document.getElementById("empresa").value;
-    const areaVal = document.getElementById("area").value.toUpperCase();
+    const nome = document.getElementById("nome").value;
+    const idade = parseInt(document.getElementById("idade").value);
+    const sexo = document.getElementById("sexo").value;
+    const telefone = document.getElementById("telefone").value;
+    const email = document.getElementById("email").value;
+    const empresa = document.getElementById("empresa").value;
+    const area = document.getElementById("area").value.toUpperCase();
 
     const file = document.getElementById("arquivo").files[0];
-    if(!file) throw new Error("Selecione um arquivo");
-
     const fileName = Date.now()+"_"+file.name;
 
     bar.style.width = "40%";
 
-    const { error: uploadError } = await client.storage
-      .from("curriculos")
-      .upload(fileName, file);
-
-    if(uploadError) throw uploadError;
+    await client.storage.from("curriculos").upload(fileName,file);
 
     bar.style.width = "70%";
 
-    const { data } = client.storage
-      .from("curriculos")
-      .getPublicUrl(fileName);
+    const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
 
-    const { error } = await client
-      .from("curriculo_candidatos")
-      .insert({
-        nome: nomeInput,
-        idade: idadeVal,
-        sexo: sexoVal,
-        telefone: telefoneVal,
-        email: emailVal,
-        empresa: empresaVal,
-        area_interesse: areaVal,
-        arquivo_url: data.publicUrl,
-        nome_arquivo: file.name
-      });
-
-    if(error) throw error;
+    await client.from("curriculo_candidatos").insert({
+      nome, idade, sexo, telefone, email,
+      empresa,
+      area_interesse: area,
+      arquivo_url: data.publicUrl,
+      nome_arquivo: file.name
+    });
 
     bar.style.width = "100%";
 
-    textoSucesso.innerHTML = `
-      Obrigado <b>${nomeInput}</b><br>
-      Seu currículo foi enviado para <b>${empresaVal}</b>.
-    `;
-
+    texto.innerHTML = `Obrigado <b>${nome}</b><br>Seu currículo foi enviado para <b>${empresa}</b>.`;
     modal.classList.add("active");
+
     form.reset();
 
   }catch(err){
-    alert("Erro: " + err.message);
+    alert("Erro: "+err.message);
   }
 
   btn.disabled = false;
