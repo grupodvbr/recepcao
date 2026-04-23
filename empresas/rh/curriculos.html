@@ -7,7 +7,7 @@
 
 <title>Trabalhe Conosco • Grupo DV</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -16,108 +16,98 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  background:linear-gradient(180deg,#f7f9fc,#eef2f7);
+  background:#f4f6fb;
   color:#111827;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
 /* HEADER */
 .header{
-  padding:18px;
+  padding:12px;
   text-align:center;
   font-weight:800;
-  font-size:18px;
   background:#fff;
   border-bottom:1px solid #e5e7eb;
 }
 
 /* CONTAINER */
 .container{
-  padding:18px;
-  max-width:520px;
-  margin:auto;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
 }
 
 /* CARD */
 .card{
+  width:100%;
+  max-width:600px;
   background:#fff;
-  border-radius:20px;
-  padding:22px;
-  box-shadow:0 15px 40px rgba(0,0,0,.06);
-  animation:fade .4s ease;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
 }
 
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1}
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
 }
 
-/* TITULO */
-.title{
-  font-size:20px;
-  font-weight:800;
-  text-align:center;
-  margin-bottom:15px;
+/* FULL */
+.full{
+  grid-column:span 2;
 }
 
 /* INPUTS */
 label{
-  font-size:13px;
+  font-size:11px;
   font-weight:600;
-  margin-top:12px;
-  display:block;
 }
 
-input,select{
+input,select,textarea{
   width:100%;
-  padding:15px;
-  margin-top:6px;
-  border-radius:14px;
+  padding:10px;
+  border-radius:10px;
   border:1px solid #e5e7eb;
   background:#f9fafb;
-  font-size:14px;
-  transition:.2s;
+  font-size:13px;
 }
 
-input:focus,select:focus{
+textarea{
+  resize:none;
+  height:60px;
+}
+
+input:focus,select:focus,textarea:focus{
+  outline:none;
   border-color:#f59e0b;
   background:#fff;
-  outline:none;
 }
 
-/* BOTÃO */
+/* BUTTON */
 button{
   width:100%;
-  padding:16px;
-  margin-top:18px;
+  padding:12px;
   border:none;
-  border-radius:14px;
+  border-radius:12px;
   background:linear-gradient(90deg,#f59e0b,#d97706);
   font-weight:700;
-  font-size:15px;
   color:#fff;
   cursor:pointer;
-  transition:.2s;
-}
-
-button:hover{
-  transform:translateY(-1px);
-}
-
-button:active{
-  transform:scale(.98);
-}
-
-button:disabled{
-  opacity:.5;
 }
 
 /* PROGRESS */
 .progress{
-  height:6px;
+  height:5px;
   background:#e5e7eb;
-  border-radius:6px;
+  border-radius:5px;
   overflow:hidden;
-  margin-top:12px;
+  margin-top:6px;
 }
 
 .progress span{
@@ -125,7 +115,6 @@ button:disabled{
   height:100%;
   width:0%;
   background:#f59e0b;
-  transition:.3s;
 }
 
 /* MODAL */
@@ -148,32 +137,20 @@ button:disabled{
 
 .modal-box{
   background:#fff;
-  padding:28px;
-  border-radius:18px;
-  width:90%;
-  max-width:320px;
+  padding:20px;
+  border-radius:14px;
   text-align:center;
-  animation:pop .3s ease;
-}
-
-@keyframes pop{
-  from{transform:scale(.9);opacity:0}
-  to{transform:scale(1);opacity:1}
+  width:90%;
+  max-width:280px;
 }
 
 .modal-box h2{
   color:#22c55e;
 }
 
-.modal-box p{
-  margin-top:10px;
-  font-size:14px;
-  color:#374151;
-}
-
 .modal-box button{
   background:#111827;
-  margin-top:15px;
+  margin-top:10px;
 }
 </style>
 
@@ -184,59 +161,88 @@ button:disabled{
 <div class="header">Grupo DV • Trabalhe Conosco</div>
 
 <div class="container">
+
 <form class="card" id="form">
 
-<div class="title">Envie seu currículo</div>
+<div class="grid">
 
-<label>Nome completo *</label>
+<div>
+<label>Nome</label>
 <input id="nome" required>
+</div>
 
-<label>Idade *</label>
+<div>
+<label>Idade</label>
 <input id="idade" type="number" required>
+</div>
 
-<label>Sexo *</label>
+<div>
+<label>Sexo</label>
 <select id="sexo" required>
-<option value="">Selecione</option>
+<option value="">---</option>
 <option>Masculino</option>
 <option>Feminino</option>
 <option>Outro</option>
 </select>
+</div>
 
-<label>Telefone *</label>
+<div>
+<label>Telefone</label>
 <input id="telefone" required>
+</div>
 
+<div class="full">
 <label>Email</label>
 <input id="email">
+</div>
 
-<label>Empresa *</label>
+<div>
+<label>Empresa</label>
 <select id="empresa" required>
-<option value="">Selecione</option>
+<option value="">---</option>
 <option>MERCATTO DELÍCIA</option>
 <option>VILLA GOURMET</option>
 <option>PADARIA DELÍCIA</option>
 <option>M.KIDS</option>
 <option>DELÍCIA GOURMET</option>
 </select>
+</div>
 
-<label>Área de Interesse *</label>
-<input id="area" required placeholder="EX: GARÇOM, COZINHA...">
+<div>
+<label>Área</label>
+<input id="area" required>
+</div>
 
-<label>Currículo *</label>
+<div class="full">
+<label>Observações</label>
+<textarea id="obs" placeholder="Algo que você acha importante..."></textarea>
+</div>
+
+<div class="full">
+<label>Currículo</label>
 <input type="file" id="arquivo" required>
+</div>
 
+<div class="full">
 <div class="progress"><span id="bar"></span></div>
+</div>
 
-<button id="btn">Enviar Currículo</button>
+<div class="full">
+<button id="btn">Enviar</button>
+</div>
+
+</div>
 
 </form>
+
 </div>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
-    <h2>✔ Enviado com sucesso</h2>
+    <h2>✔ Enviado</h2>
     <p id="texto"></p>
-    <button onclick="fechar()">Fechar</button>
+    <button onclick="fechar()">OK</button>
   </div>
 </div>
 
@@ -271,15 +277,14 @@ form.addEventListener("submit", async (e)=>{
     const email = document.getElementById("email").value;
     const empresa = document.getElementById("empresa").value;
     const area = document.getElementById("area").value.toUpperCase();
+    const observacoes = document.getElementById("obs").value;
 
     const file = document.getElementById("arquivo").files[0];
     const fileName = Date.now()+"_"+file.name;
 
-    bar.style.width = "40%";
+    bar.style.width = "50%";
 
     await client.storage.from("curriculos").upload(fileName,file);
-
-    bar.style.width = "70%";
 
     const { data } = client.storage.from("curriculos").getPublicUrl(fileName);
 
@@ -287,13 +292,14 @@ form.addEventListener("submit", async (e)=>{
       nome, idade, sexo, telefone, email,
       empresa,
       area_interesse: area,
+      observacoes,
       arquivo_url: data.publicUrl,
       nome_arquivo: file.name
     });
 
     bar.style.width = "100%";
 
-    texto.innerHTML = `Obrigado <b>${nome}</b><br>Seu currículo foi enviado para <b>${empresa}</b>.`;
+    texto.innerHTML = `Obrigado <b>${nome}</b><br>Enviado para <b>${empresa}</b>`;
     modal.classList.add("active");
 
     form.reset();
