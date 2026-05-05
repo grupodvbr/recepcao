@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fornecedor • Cotações Mercatto</title>
+<title>Portal do Fornecedor • Mercatto</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 :root{
-  --primary:#111827;
-  --primary2:#1f2937;
+  --primary:#0f172a;
+  --primary2:#111827;
   --bg:#f3f4f6;
   --card:#ffffff;
   --border:#e5e7eb;
@@ -23,7 +23,7 @@
   --red:#dc2626;
   --yellow:#ca8a04;
   --shadow:0 10px 30px rgba(0,0,0,.08);
-  --radius:18px;
+  --radius:22px;
 }
 
 *{
@@ -48,38 +48,62 @@ body{
   padding:20px;
 }
 
-.login-box{
+.login-card{
   width:100%;
-  max-width:420px;
+  max-width:430px;
   background:#fff;
-  border-radius:24px;
-  padding:30px;
+  border-radius:30px;
+  padding:34px;
   box-shadow:var(--shadow);
 }
 
-.login-box h1{
+.logo{
+  width:70px;
+  height:70px;
+  border-radius:20px;
+  background:#111827;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  font-weight:900;
   margin-bottom:24px;
-  font-size:28px;
 }
 
-.login-box input{
+.login-card h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.login-card p{
+  color:var(--muted);
+  margin-bottom:24px;
+}
+
+.login-card input{
   width:100%;
-  padding:14px;
-  border-radius:14px;
+  padding:16px;
+  border-radius:16px;
   border:1px solid var(--border);
   margin-bottom:14px;
   font-size:15px;
+  outline:none;
 }
 
-.login-box button{
+.login-card input:focus{
+  border-color:#111827;
+}
+
+.login-card button{
   width:100%;
-  padding:15px;
+  padding:16px;
   border:none;
-  border-radius:14px;
-  background:var(--primary);
+  border-radius:16px;
+  background:#111827;
   color:#fff;
   font-size:15px;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
 }
 
@@ -108,22 +132,36 @@ body{
   flex-wrap:wrap;
 }
 
-.top h1{
-  font-size:24px;
+.top-left h1{
+  font-size:28px;
+  margin-bottom:4px;
 }
 
-.top small{
+.top-left small{
   color:var(--muted);
 }
 
-.top button{
+.top-right{
+  display:flex;
+  gap:10px;
+}
+
+.btn{
   border:none;
+  padding:12px 16px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.btn-refresh{
+  background:#111827;
+  color:#fff;
+}
+
+.btn-logout{
   background:#ef4444;
   color:#fff;
-  padding:12px 16px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:700;
 }
 
 /* ================= CONTAINER ================= */
@@ -135,12 +173,12 @@ body{
   gap:20px;
 }
 
-/* ================= CARD ================= */
+/* ================= COTAÇÃO ================= */
 
 .card{
   background:#fff;
-  border-radius:24px;
-  padding:22px;
+  border-radius:26px;
+  padding:24px;
   box-shadow:var(--shadow);
 }
 
@@ -154,33 +192,44 @@ body{
 }
 
 .card-top h2{
-  font-size:20px;
+  font-size:24px;
 }
 
-.status{
-  padding:8px 14px;
+.card-top small{
+  color:var(--muted);
+}
+
+.badges{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.badge{
+  padding:7px 12px;
   border-radius:999px;
   font-size:12px;
-  font-weight:700;
+  font-weight:800;
 }
 
-.ativa{
+.badge-ativa{
   background:#dcfce7;
   color:#166534;
 }
 
-.finalizada{
+.badge-finalizada{
   background:#fee2e2;
   color:#991b1b;
 }
 
-/* ================= ITENS ================= */
+/* ================= ITEM ================= */
 
 .item{
   border:1px solid var(--border);
-  border-radius:18px;
+  border-radius:22px;
   padding:18px;
-  margin-bottom:16px;
+  margin-bottom:18px;
 }
 
 .item-top{
@@ -188,19 +237,20 @@ body{
 }
 
 .item-top h3{
-  font-size:16px;
-  margin-bottom:4px;
+  font-size:18px;
+  margin-bottom:6px;
 }
 
 .item-top small{
   color:var(--muted);
+  line-height:1.5;
 }
 
 .grid{
   display:grid;
   grid-template-columns:
   repeat(auto-fit,minmax(180px,1fr));
-  gap:12px;
+  gap:14px;
 }
 
 .box{
@@ -212,20 +262,27 @@ body{
 .box span{
   font-size:12px;
   color:var(--muted);
+  font-weight:600;
 }
 
 .box input,
 .box textarea{
   width:100%;
-  padding:12px;
-  border-radius:12px;
+  padding:14px;
+  border-radius:14px;
   border:1px solid var(--border);
   font-size:14px;
+  outline:none;
+}
+
+.box input:focus,
+.box textarea:focus{
+  border-color:#111827;
 }
 
 .box textarea{
+  min-height:100px;
   resize:none;
-  min-height:90px;
 }
 
 /* ================= AÇÕES ================= */
@@ -234,24 +291,16 @@ body{
   display:flex;
   justify-content:flex-end;
   gap:12px;
-  margin-top:18px;
   flex-wrap:wrap;
+  margin-top:18px;
 }
 
-.actions button{
-  padding:14px 18px;
-  border:none;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-.btn-primary{
+.btn-save{
   background:#111827;
   color:#fff;
 }
 
-.btn-light{
+.btn-clear{
   background:#f3f4f6;
 }
 
@@ -266,24 +315,46 @@ body{
   justify-content:center;
   align-items:center;
   z-index:9999;
-  font-size:20px;
-  font-weight:800;
+  font-size:22px;
+  font-weight:900;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+  background:#fff;
+  border-radius:24px;
+  padding:60px 20px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.empty h2{
+  margin-bottom:8px;
+}
+
+.empty p{
+  color:var(--muted);
 }
 
 /* ================= MOBILE ================= */
 
 @media(max-width:700px){
 
-  .top{
+  .container{
     padding:18px;
   }
 
-  .container{
+  .top{
     padding:18px;
   }
 
   .card{
     padding:18px;
+  }
+
+  .card-top h2{
+    font-size:20px;
   }
 
 }
@@ -297,9 +368,17 @@ body{
 
 <div class="login" id="login">
 
-  <div class="login-box">
+  <div class="login-card">
 
-    <h1>Fornecedor</h1>
+    <div class="logo">
+      M
+    </div>
+
+    <h1>Portal do Fornecedor</h1>
+
+    <p>
+      Acesse suas cotações pendentes.
+    </p>
 
     <input
       id="cnpj"
@@ -328,7 +407,7 @@ body{
 
     <div class="top-flex">
 
-      <div>
+      <div class="top-left">
 
         <h1 id="nomeFornecedor">
           Fornecedor
@@ -338,9 +417,25 @@ body{
 
       </div>
 
-      <button onclick="sair()">
-        Sair
-      </button>
+      <div class="top-right">
+
+        <button
+          class="btn btn-refresh"
+          onclick="carregarCotacoes()">
+
+          Atualizar
+
+        </button>
+
+        <button
+          class="btn btn-logout"
+          onclick="sair()">
+
+          Sair
+
+        </button>
+
+      </div>
 
     </div>
 
@@ -363,22 +458,12 @@ const sb = supabase.createClient(
   "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
 );
 
-/* =========================
-   STORAGE
-========================= */
-
 let fornecedor = JSON.parse(
   localStorage.getItem("fornecedor_logado")
 );
 
-/* =========================
-   INIT
-========================= */
-
 if(fornecedor){
-
   iniciar();
-
 }
 
 /* =========================
@@ -399,11 +484,13 @@ function overlay(show){
 
 async function entrar(){
 
-  let cnpj = document.getElementById("cnpj")
+  const cnpj = document
+    .getElementById("cnpj")
     .value
     .replace(/\D/g,"");
 
-  let senha = document.getElementById("senha")
+  const senha = document
+    .getElementById("senha")
     .value
     .trim();
 
@@ -428,6 +515,8 @@ async function entrar(){
 
   if(error){
 
+    console.log(error);
+
     alert("Erro ao acessar");
 
     return;
@@ -437,18 +526,23 @@ async function entrar(){
     .find(f => {
 
       const bancoCnpj =
-        (f.cnpj || "")
+        String(f.cnpj || "")
         .replace(/\D/g,"");
+
+      const bancoSenha =
+        String(f.senha || "").trim();
 
       return (
         bancoCnpj === cnpj &&
-        String(f.senha || "") === senha
+        bancoSenha === senha
       );
     });
 
   if(!encontrado){
 
-    alert("CNPJ ou senha inválidos");
+    alert(
+      "CNPJ ou senha inválidos"
+    );
 
     return;
   }
@@ -469,16 +563,21 @@ async function entrar(){
 
 async function iniciar(){
 
-  document.getElementById("login")
+  document
+    .getElementById("login")
     .style.display = "none";
 
-  document.getElementById("app")
+  document
+    .getElementById("app")
     .style.display = "block";
 
-  document.getElementById("nomeFornecedor")
-    .innerText = fornecedor.nome;
+  document
+    .getElementById("nomeFornecedor")
+    .innerText =
+      fornecedor.nome;
 
-  document.getElementById("infoFornecedor")
+  document
+    .getElementById("infoFornecedor")
     .innerText =
       fornecedor.cnpj || "";
 
@@ -486,7 +585,7 @@ async function iniciar(){
 }
 
 /* =========================
-   CARREGAR
+   COTAÇÕES
 ========================= */
 
 async function carregarCotacoes(){
@@ -497,13 +596,7 @@ async function carregarCotacoes(){
 
     .from("cotacoes")
 
-    .select(`
-      *,
-      cotacoes_itens(
-        *,
-        item_id
-      )
-    `)
+    .select("*")
 
     .contains(
       "fornecedores_ids",
@@ -536,18 +629,29 @@ async function carregarCotacoes(){
 function renderCotacoes(cotacoes){
 
   const lista =
-    document.getElementById("listaCotacoes");
+    document.getElementById(
+      "listaCotacoes"
+    );
 
   lista.innerHTML = "";
 
   if(!cotacoes.length){
 
     lista.innerHTML = `
-      <div class="card">
 
-        Nenhuma cotação encontrada
+      <div class="empty">
+
+        <h2>
+          Nenhuma cotação pendente
+        </h2>
+
+        <p>
+          Você não possui cotações
+          disponíveis no momento.
+        </p>
 
       </div>
+
     `;
 
     return;
@@ -573,11 +677,20 @@ function renderCotacoes(cotacoes){
               ${formatarData(c.data_cotacao)}
             </small>
 
-          </div>
+            <div class="badges">
 
-          <div class="status ${c.status || "ativa"}">
+              <div class="badge ${
+                c.status === "finalizada"
+                  ? "badge-finalizada"
+                  : "badge-ativa"
+              }">
 
-            ${(c.status || "ativa").toUpperCase()}
+                ${(c.status || "ativa")
+                  .toUpperCase()}
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -585,10 +698,12 @@ function renderCotacoes(cotacoes){
 
         ${itens.map((i,index)=>{
 
+          const key =
+            "cot_"+c.id+"_"+index;
+
           const cache = JSON.parse(
-            localStorage.getItem(
-              "cot_"+c.id+"_"+index
-            ) || "{}"
+            localStorage.getItem(key)
+            || "{}"
           );
 
           return `
@@ -598,18 +713,23 @@ function renderCotacoes(cotacoes){
               <div class="item-top">
 
                 <h3>
-                  ${i.produto}
+                  ${i.produto || "-"}
                 </h3>
 
                 <small>
 
                   Atual:
-                  ${i.atual}
+                  ${i.atual || 0}
 
                   •
 
                   Comprar:
-                  ${i.comprar}
+                  ${i.comprar || 0}
+
+                  •
+
+                  Ideal:
+                  ${i.ideal || 0}
 
                 </small>
 
@@ -625,7 +745,7 @@ function renderCotacoes(cotacoes){
                     value="${cache.marca || ""}"
                     oninput="
                       salvarLocal(
-                        'cot_${c.id}_${index}',
+                        '${key}',
                         'marca',
                         this.value
                       )
@@ -641,10 +761,11 @@ function renderCotacoes(cotacoes){
                   <input
                     value="${cache.preco || ""}"
                     oninput="
-                      this.value = money(this.value);
+                      this.value =
+                        money(this.value);
 
                       salvarLocal(
-                        'cot_${c.id}_${index}',
+                        '${key}',
                         'preco',
                         this.value
                       )
@@ -661,7 +782,7 @@ function renderCotacoes(cotacoes){
                     value="${cache.prazo || ""}"
                     oninput="
                       salvarLocal(
-                        'cot_${c.id}_${index}',
+                        '${key}',
                         'prazo',
                         this.value
                       )
@@ -677,7 +798,7 @@ function renderCotacoes(cotacoes){
                   <textarea
                     oninput="
                       salvarLocal(
-                        'cot_${c.id}_${index}',
+                        '${key}',
                         'obs',
                         this.value
                       )
@@ -697,7 +818,7 @@ function renderCotacoes(cotacoes){
         <div class="actions">
 
           <button
-            class="btn-light"
+            class="btn btn-clear"
             onclick="limpar(${c.id})">
 
             Limpar
@@ -705,8 +826,8 @@ function renderCotacoes(cotacoes){
           </button>
 
           <button
-            class="btn-primary"
-            onclick="enviarCotacao(${c.id})">
+            class="btn btn-save"
+            onclick="enviar(${c.id})">
 
             Enviar Cotação
 
@@ -721,13 +842,18 @@ function renderCotacoes(cotacoes){
 }
 
 /* =========================
-   LOCAL
+   SALVAR LOCAL
 ========================= */
 
-function salvarLocal(key,campo,valor){
+function salvarLocal(
+  key,
+  campo,
+  valor
+){
 
   let obj = JSON.parse(
-    localStorage.getItem(key) || "{}"
+    localStorage.getItem(key)
+    || "{}"
   );
 
   obj[campo] = valor;
@@ -742,7 +868,7 @@ function salvarLocal(key,campo,valor){
    ENVIAR
 ========================= */
 
-async function enviarCotacao(cotacaoId){
+async function enviar(cotacaoId){
 
   overlay(true);
 
@@ -756,16 +882,16 @@ async function enviarCotacao(cotacaoId){
 
     .single();
 
-  const itens = data.itens || [];
+  let itens = data.itens || [];
 
   for(let i=0; i<itens.length; i++){
 
+    const key =
+      "cot_"+cotacaoId+"_"+i;
+
     const cache = JSON.parse(
-
-      localStorage.getItem(
-        "cot_"+cotacaoId+"_"+i
-      ) || "{}"
-
+      localStorage.getItem(key)
+      || "{}"
     );
 
     if(
@@ -775,20 +901,32 @@ async function enviarCotacao(cotacaoId){
       continue;
     }
 
-    itens[i].preco_cotado = Number(
+    itens[i].cotado = true;
 
-      String(cache.preco)
-      .replace(/\./g,"")
-      .replace(",", ".")
+    itens[i].fornecedor_id =
+      fornecedor.id;
 
-    );
+    itens[i].fornecedor_nome =
+      fornecedor.nome;
 
-    itens[i].marca = cache.marca;
-    itens[i].prazo = cache.prazo || "";
-    itens[i].observacao = cache.obs || "";
-    itens[i].fornecedor_id = fornecedor.id;
-    itens[i].fornecedor_nome = fornecedor.nome;
-    itens[i].respondido_em = new Date();
+    itens[i].marca =
+      cache.marca;
+
+    itens[i].preco_cotado =
+      Number(
+        String(cache.preco)
+        .replace(/\./g,"")
+        .replace(",", ".")
+      );
+
+    itens[i].prazo =
+      cache.prazo || "";
+
+    itens[i].observacao =
+      cache.obs || "";
+
+    itens[i].respondido_em =
+      new Date();
 
   }
 
@@ -797,17 +935,17 @@ async function enviarCotacao(cotacaoId){
     .from("cotacoes")
 
     .update({
-
       itens,
       status:"respondida"
-
     })
 
     .eq("id", cotacaoId);
 
   overlay(false);
 
-  alert("Cotação enviada");
+  alert(
+    "Cotação enviada com sucesso"
+  );
 
   carregarCotacoes();
 }
@@ -820,9 +958,11 @@ function limpar(cotacaoId){
 
   Object.keys(localStorage)
 
-    .filter(k => k.startsWith(
-      "cot_"+cotacaoId+"_"
-    ))
+    .filter(k =>
+      k.startsWith(
+        "cot_"+cotacaoId+"_"
+      )
+    )
 
     .forEach(k => {
 
@@ -867,7 +1007,9 @@ function money(v){
 
   return v
     .replace(".",",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g,".");
+    .replace(/\B(
+      ?=(\d{3})+(?!\d)
+    )/g,".");
 }
 
 </script>
