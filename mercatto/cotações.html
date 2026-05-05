@@ -998,6 +998,8 @@ function formatarData(data){
     .toLocaleString("pt-BR");
 }
 
+
+
 function money(v){
 
   v = v.replace(/\D/g,"");
@@ -1007,11 +1009,8 @@ function money(v){
 
   return v
     .replace(".",",")
-    .replace(/\B(
-      ?=(\d{3})+(?!\d)
-    )/g,".");
+    .replace(/\B(?=(\d{3})+(?!\d))/g,".");
 }
-
 </script>
 
 </body>
