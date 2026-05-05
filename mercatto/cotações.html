@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fornecedor • Cotações Mercatto</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+:root{
+  --primary:#111827;
+  --primary2:#1f2937;
+  --bg:#f3f4f6;
+  --card:#ffffff;
+  --border:#e5e7eb;
+  --muted:#6b7280;
+  --green:#16a34a;
+  --red:#dc2626;
+  --yellow:#ca8a04;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
+  --radius:18px;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Inter;
+}
+
+body{
+  background:var(--bg);
+  color:#111827;
+}
+
+/* ================= LOGIN ================= */
+
+.login{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.login-box{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:24px;
+  padding:30px;
+  box-shadow:var(--shadow);
+}
+
+.login-box h1{
+  margin-bottom:24px;
+  font-size:28px;
+}
+
+.login-box input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  margin-bottom:14px;
+  font-size:15px;
+}
+
+.login-box button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:var(--primary);
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ================= APP ================= */
+
+.app{
+  display:none;
+}
+
+/* ================= TOPO ================= */
+
+.top{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:18px 24px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.top-flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.top h1{
+  font-size:24px;
+}
+
+.top small{
+  color:var(--muted);
+}
+
+.top button{
+  border:none;
+  background:#ef4444;
+  color:#fff;
+  padding:12px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+/* ================= CARD ================= */
+
+.card{
+  background:#fff;
+  border-radius:24px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+
+.card-top h2{
+  font-size:20px;
+}
+
+.status{
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.ativa{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.finalizada{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+/* ================= ITENS ================= */
+
+.item{
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.item-top{
+  margin-bottom:16px;
+}
+
+.item-top h3{
+  font-size:16px;
+  margin-bottom:4px;
+}
+
+.item-top small{
+  color:var(--muted);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+}
+
+.box{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.box span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+.box input,
+.box textarea{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:14px;
+}
+
+.box textarea{
+  resize:none;
+  min-height:90px;
+}
+
+/* ================= AÇÕES ================= */
+
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:12px;
+  margin-top:18px;
+  flex-wrap:wrap;
+}
+
+.actions button{
+  padding:14px 18px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.btn-primary{
+  background:#111827;
+  color:#fff;
+}
+
+.btn-light{
+  background:#f3f4f6;
+}
+
+/* ================= OVERLAY ================= */
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(4px);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  font-size:20px;
+  font-weight:800;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:700px){
+
+  .top{
+    padding:18px;
+  }
+
+  .container{
+    padding:18px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+
+<div class="login" id="login">
+
+  <div class="login-box">
+
+    <h1>Fornecedor</h1>
+
+    <input
+      id="cnpj"
+      placeholder="CNPJ"
+    >
+
+    <input
+      id="senha"
+      type="password"
+      placeholder="Senha"
+    >
+
+    <button onclick="entrar()">
+      Entrar
+    </button>
+
+  </div>
+
+</div>
+
+<!-- ================= APP ================= -->
+
+<div class="app" id="app">
+
+  <div class="top">
+
+    <div class="top-flex">
+
+      <div>
+
+        <h1 id="nomeFornecedor">
+          Fornecedor
+        </h1>
+
+        <small id="infoFornecedor"></small>
+
+      </div>
+
+      <button onclick="sair()">
+        Sair
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="container" id="listaCotacoes"></div>
+
+</div>
+
+<!-- ================= OVERLAY ================= -->
+
+<div class="overlay" id="overlay">
+  Processando...
+</div>
+
+<script>
+
+const sb = supabase.createClient(
+  "https://dxkszikemntfusfyrzos.supabase.co",
+  "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
+);
+
+/* =========================
+   STORAGE
+========================= */
+
+let fornecedor = JSON.parse(
+  localStorage.getItem("fornecedor_logado")
+);
+
+/* =========================
+   INIT
+========================= */
+
+if(fornecedor){
+
+  iniciar();
+
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+function overlay(show){
+
+  document.getElementById("overlay")
+    .style.display = show
+      ? "flex"
+      : "none";
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+async function entrar(){
+
+  let cnpj = document.getElementById("cnpj")
+    .value
+    .replace(/\D/g,"");
+
+  let senha = document.getElementById("senha")
+    .value
+    .trim();
+
+  if(!cnpj){
+    alert("Informe o CNPJ");
+    return;
+  }
+
+  if(!senha){
+    alert("Informe a senha");
+    return;
+  }
+
+  overlay(true);
+
+  const { data, error } = await sb
+    .from("fornecedores_mercatto")
+    .select("*")
+    .eq("ativo", true);
+
+  overlay(false);
+
+  if(error){
+
+    alert("Erro ao acessar");
+
+    return;
+  }
+
+  const encontrado = (data || [])
+    .find(f => {
+
+      const bancoCnpj =
+        (f.cnpj || "")
+        .replace(/\D/g,"");
+
+      return (
+        bancoCnpj === cnpj &&
+        String(f.senha || "") === senha
+      );
+    });
+
+  if(!encontrado){
+
+    alert("CNPJ ou senha inválidos");
+
+    return;
+  }
+
+  fornecedor = encontrado;
+
+  localStorage.setItem(
+    "fornecedor_logado",
+    JSON.stringify(fornecedor)
+  );
+
+  iniciar();
+}
+
+/* =========================
+   INICIAR
+========================= */
+
+async function iniciar(){
+
+  document.getElementById("login")
+    .style.display = "none";
+
+  document.getElementById("app")
+    .style.display = "block";
+
+  document.getElementById("nomeFornecedor")
+    .innerText = fornecedor.nome;
+
+  document.getElementById("infoFornecedor")
+    .innerText =
+      fornecedor.cnpj || "";
+
+  await carregarCotacoes();
+}
+
+/* =========================
+   CARREGAR
+========================= */
+
+async function carregarCotacoes(){
+
+  overlay(true);
+
+  const { data, error } = await sb
+
+    .from("cotacoes")
+
+    .select(`
+      *,
+      cotacoes_itens(
+        *,
+        item_id
+      )
+    `)
+
+    .contains(
+      "fornecedores_ids",
+      [fornecedor.id]
+    )
+
+    .order(
+      "data_cotacao",
+      { ascending:false }
+    );
+
+  overlay(false);
+
+  if(error){
+
+    console.log(error);
+
+    alert("Erro ao carregar");
+
+    return;
+  }
+
+  renderCotacoes(data || []);
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function renderCotacoes(cotacoes){
+
+  const lista =
+    document.getElementById("listaCotacoes");
+
+  lista.innerHTML = "";
+
+  if(!cotacoes.length){
+
+    lista.innerHTML = `
+      <div class="card">
+
+        Nenhuma cotação encontrada
+
+      </div>
+    `;
+
+    return;
+  }
+
+  cotacoes.forEach(c => {
+
+    const itens = c.itens || [];
+
+    lista.innerHTML += `
+
+      <div class="card">
+
+        <div class="card-top">
+
+          <div>
+
+            <h2>
+              ${c.nome || "Cotação"}
+            </h2>
+
+            <small>
+              ${formatarData(c.data_cotacao)}
+            </small>
+
+          </div>
+
+          <div class="status ${c.status || "ativa"}">
+
+            ${(c.status || "ativa").toUpperCase()}
+
+          </div>
+
+        </div>
+
+        ${itens.map((i,index)=>{
+
+          const cache = JSON.parse(
+            localStorage.getItem(
+              "cot_"+c.id+"_"+index
+            ) || "{}"
+          );
+
+          return `
+
+            <div class="item">
+
+              <div class="item-top">
+
+                <h3>
+                  ${i.produto}
+                </h3>
+
+                <small>
+
+                  Atual:
+                  ${i.atual}
+
+                  •
+
+                  Comprar:
+                  ${i.comprar}
+
+                </small>
+
+              </div>
+
+              <div class="grid">
+
+                <div class="box">
+
+                  <span>Marca</span>
+
+                  <input
+                    value="${cache.marca || ""}"
+                    oninput="
+                      salvarLocal(
+                        'cot_${c.id}_${index}',
+                        'marca',
+                        this.value
+                      )
+                    "
+                  >
+
+                </div>
+
+                <div class="box">
+
+                  <span>Preço</span>
+
+                  <input
+                    value="${cache.preco || ""}"
+                    oninput="
+                      this.value = money(this.value);
+
+                      salvarLocal(
+                        'cot_${c.id}_${index}',
+                        'preco',
+                        this.value
+                      )
+                    "
+                  >
+
+                </div>
+
+                <div class="box">
+
+                  <span>Prazo</span>
+
+                  <input
+                    value="${cache.prazo || ""}"
+                    oninput="
+                      salvarLocal(
+                        'cot_${c.id}_${index}',
+                        'prazo',
+                        this.value
+                      )
+                    "
+                  >
+
+                </div>
+
+                <div class="box">
+
+                  <span>Observação</span>
+
+                  <textarea
+                    oninput="
+                      salvarLocal(
+                        'cot_${c.id}_${index}',
+                        'obs',
+                        this.value
+                      )
+                    "
+                  >${cache.obs || ""}</textarea>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }).join("")}
+
+        <div class="actions">
+
+          <button
+            class="btn-light"
+            onclick="limpar(${c.id})">
+
+            Limpar
+
+          </button>
+
+          <button
+            class="btn-primary"
+            onclick="enviarCotacao(${c.id})">
+
+            Enviar Cotação
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+  });
+}
+
+/* =========================
+   LOCAL
+========================= */
+
+function salvarLocal(key,campo,valor){
+
+  let obj = JSON.parse(
+    localStorage.getItem(key) || "{}"
+  );
+
+  obj[campo] = valor;
+
+  localStorage.setItem(
+    key,
+    JSON.stringify(obj)
+  );
+}
+
+/* =========================
+   ENVIAR
+========================= */
+
+async function enviarCotacao(cotacaoId){
+
+  overlay(true);
+
+  const { data } = await sb
+
+    .from("cotacoes")
+
+    .select("*")
+
+    .eq("id", cotacaoId)
+
+    .single();
+
+  const itens = data.itens || [];
+
+  for(let i=0; i<itens.length; i++){
+
+    const cache = JSON.parse(
+
+      localStorage.getItem(
+        "cot_"+cotacaoId+"_"+i
+      ) || "{}"
+
+    );
+
+    if(
+      !cache.preco ||
+      !cache.marca
+    ){
+      continue;
+    }
+
+    itens[i].preco_cotado = Number(
+
+      String(cache.preco)
+      .replace(/\./g,"")
+      .replace(",", ".")
+
+    );
+
+    itens[i].marca = cache.marca;
+    itens[i].prazo = cache.prazo || "";
+    itens[i].observacao = cache.obs || "";
+    itens[i].fornecedor_id = fornecedor.id;
+    itens[i].fornecedor_nome = fornecedor.nome;
+    itens[i].respondido_em = new Date();
+
+  }
+
+  await sb
+
+    .from("cotacoes")
+
+    .update({
+
+      itens,
+      status:"respondida"
+
+    })
+
+    .eq("id", cotacaoId);
+
+  overlay(false);
+
+  alert("Cotação enviada");
+
+  carregarCotacoes();
+}
+
+/* =========================
+   LIMPAR
+========================= */
+
+function limpar(cotacaoId){
+
+  Object.keys(localStorage)
+
+    .filter(k => k.startsWith(
+      "cot_"+cotacaoId+"_"
+    ))
+
+    .forEach(k => {
+
+      localStorage.removeItem(k);
+
+    });
+
+  carregarCotacoes();
+}
+
+/* =========================
+   SAIR
+========================= */
+
+function sair(){
+
+  localStorage.removeItem(
+    "fornecedor_logado"
+  );
+
+  location.reload();
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function formatarData(data){
+
+  if(!data) return "-";
+
+  return new Date(data)
+    .toLocaleString("pt-BR");
+}
+
+function money(v){
+
+  v = v.replace(/\D/g,"");
+
+  v = (Number(v)/100)
+    .toFixed(2);
+
+  return v
+    .replace(".",",")
+    .replace(/\B(?=(\d{3})+(?!\d))/g,".");
+}
+
+</script>
+
+</body>
+</html>
