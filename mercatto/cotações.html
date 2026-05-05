@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Portal do Fornecedor • Mercatto</title>
 
@@ -153,6 +153,11 @@ body{
   background:#dc2626;
 }
 
+.btn-light{
+  background:#f3f4f6;
+  color:#111827;
+}
+
 /* ================= CONTAINER ================= */
 
 .container{
@@ -194,6 +199,8 @@ body{
   font-size:12px;
 }
 
+/* ================= STATUS ================= */
+
 .status{
   padding:6px 12px;
   border-radius:999px;
@@ -225,7 +232,7 @@ body{
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:1400px;
+  min-width:1900px;
 }
 
 thead{
@@ -235,6 +242,7 @@ thead{
 th{
   padding:10px 12px;
   border-bottom:1px solid var(--line);
+  border-right:1px solid var(--line);
   text-align:left;
   font-size:11px;
   font-weight:700;
@@ -245,8 +253,13 @@ th{
 td{
   padding:8px 12px;
   border-bottom:1px solid #f1f5f9;
+  border-right:1px solid #f1f5f9;
   vertical-align:top;
   font-size:13px;
+}
+
+tr:hover td{
+  background:#fafafa;
 }
 
 /* ================= INPUT ================= */
@@ -260,7 +273,24 @@ td{
   outline:none;
 }
 
-/* ================= INFO ================= */
+.input:focus{
+  border-color:#111827;
+}
+
+.money{
+  text-align:right;
+}
+
+.center{
+  text-align:center;
+}
+
+.readonly{
+  background:#f9fafb;
+  cursor:not-allowed;
+}
+
+/* ================= BADGE ================= */
 
 .badge{
   padding:6px 10px;
@@ -280,7 +310,7 @@ td{
   color:#166534;
 }
 
-/* ================= ACTIONS ================= */
+/* ================= FOOTER ================= */
 
 .actions{
   padding:14px 18px;
@@ -289,11 +319,6 @@ td{
   justify-content:flex-end;
   gap:10px;
   background:#fafafa;
-}
-
-.btn-light{
-  background:#f3f4f6;
-  color:#111827;
 }
 
 /* ================= EMPTY ================= */
@@ -327,7 +352,7 @@ td{
 
 <body>
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 
 <div class="login" id="login">
 
@@ -362,7 +387,7 @@ td{
 
 </div>
 
-<!-- ================= APP ================= -->
+<!-- APP -->
 
 <div class="app" id="app">
 
@@ -411,7 +436,7 @@ td{
 
 </div>
 
-<!-- ================= OVERLAY ================= -->
+<!-- OVERLAY -->
 
 <div
   class="overlay"
@@ -457,7 +482,6 @@ async function entrar(){
     .from("fornecedores_mercatto")
 
     .select("*")
-
     .eq("ativo", true);
 
   overlay(false);
@@ -467,15 +491,19 @@ async function entrar(){
     .find(f => {
 
       return (
+
         String(f.cnpj || "")
         .replace(/\D/g,"")
+
         === cnpj
 
         &&
 
         String(f.senha || "")
         .trim()
+
         === senha
+
       );
 
     });
@@ -601,11 +629,12 @@ function renderCotacoes(cotacoes){
     const itens =
       c.itens_cotacao || [];
 
+    const bloqueada =
+      c.status === "finalizada";
+
     lista.innerHTML += `
 
       <div class="card">
-
-        <!-- HEADER -->
 
         <div class="card-top">
 
@@ -642,8 +671,6 @@ function renderCotacoes(cotacoes){
 
         </div>
 
-        <!-- TABELA -->
-
         <div class="table-wrap">
 
           <table>
@@ -654,11 +681,13 @@ function renderCotacoes(cotacoes){
 
                 <th>Produto</th>
                 <th>Qtd</th>
+                <th>Und. Solic.</th>
                 <th>Marca</th>
-                <th>Preço</th>
-                <th>Total</th>
+                <th>Preço Emb.</th>
                 <th>Unidade</th>
-                <th>Emb.</th>
+                <th>Qtd Emb.</th>
+                <th>Preço Unit.</th>
+                <th>Total</th>
                 <th>Prazo</th>
                 <th>Observação</th>
                 <th>Status</th>
@@ -672,11 +701,13 @@ function renderCotacoes(cotacoes){
               ${itens.map((i,index)=>{
 
                 const meuFornecedor =
+
                   (i.fornecedores || [])
 
                   .find(f =>
 
-                    f.fornecedor_id === fornecedor.id
+                    f.fornecedor_id ===
+                    fornecedor.id
 
                   );
 
@@ -692,8 +723,8 @@ function renderCotacoes(cotacoes){
 
                   || JSON.stringify({
 
-                    preco:
-                      meuFornecedor.preco_unitario || "",
+                    preco_embalagem:
+                      meuFornecedor.preco_embalagem || "",
 
                     marca:
                       meuFornecedor.marca || "",
@@ -705,7 +736,7 @@ function renderCotacoes(cotacoes){
                       meuFornecedor.prazo || "",
 
                     unidade:
-                      meuFornecedor.unidade || "UN",
+                      meuFornecedor.unidade || i.unidade || "UN",
 
                     embalagem:
                       meuFornecedor.quantidade_embalagem || 1
@@ -713,6 +744,32 @@ function renderCotacoes(cotacoes){
                   })
 
                 );
+
+                const qtdEmb =
+                  Number(
+                    cache.embalagem || 1
+                  );
+
+                const precoEmb =
+                  Number(
+
+                    String(
+                      cache.preco_embalagem || 0
+                    )
+
+                    .replace(/\./g,"")
+                    .replace(",", ".")
+
+                  );
+
+                const precoUnit =
+                  qtdEmb > 0
+                  ? precoEmb / qtdEmb
+                  : 0;
+
+                const total =
+                  precoUnit *
+                  Number(i.qtd_solicitada || 0);
 
                 return `
 
@@ -730,9 +787,19 @@ function renderCotacoes(cotacoes){
 
                     <!-- QTD -->
 
-                    <td>
+                    <td class="center">
 
                       ${i.qtd_solicitada || 0}
+
+                    </td>
+
+                    <!-- UND -->
+
+                    <td>
+
+                      <b>
+                        ${i.unidade || "UN"}
+                      </b>
 
                     </td>
 
@@ -741,9 +808,14 @@ function renderCotacoes(cotacoes){
                     <td>
 
                       <input
-                        class="input"
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
                         value="${cache.marca || ""}"
+
+                        ${bloqueada ? "readonly" : ""}
 
                         oninput="
                           salvarLocal(
@@ -756,14 +828,22 @@ function renderCotacoes(cotacoes){
 
                     </td>
 
-                    <!-- PREÇO -->
+                    <!-- PREÇO EMB -->
 
                     <td>
 
                       <input
-                        class="input"
+                        class="
+                          input
+                          money
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
-                        value="${cache.preco || ""}"
+                        value="${
+                          cache.preco_embalagem || ""
+                        }"
+
+                        ${bloqueada ? "readonly" : ""}
 
                         oninput="
                           this.value =
@@ -771,45 +851,11 @@ function renderCotacoes(cotacoes){
 
                           salvarLocal(
                             '${key}',
-                            'preco',
+                            'preco_embalagem',
                             this.value
                           )
                         "
                       >
-
-                    </td>
-
-                    <!-- TOTAL -->
-
-                    <td>
-
-                      <b>
-
-                        ${
-                          cache.preco
-
-                          ? "R$ " + (
-
-                            Number(
-                              String(cache.preco)
-                              .replace(/\./g,"")
-                              .replace(",",".")
-                            )
-
-                            *
-
-                            Number(
-                              i.qtd_solicitada || 0
-                            )
-
-                            / 100
-
-                          ).toFixed(2)
-
-                          : "-"
-                        }
-
-                      </b>
 
                     </td>
 
@@ -817,19 +863,56 @@ function renderCotacoes(cotacoes){
 
                     <td>
 
-                      <input
-                        class="input"
+                      <select
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
-                        value="${cache.unidade || "UN"}"
+                        ${bloqueada ? "disabled" : ""}
 
-                        oninput="
+                        onchange="
                           salvarLocal(
                             '${key}',
                             'unidade',
                             this.value
                           )
                         "
+
                       >
+
+                        ${[
+                          "UN",
+                          "CX",
+                          "KG",
+                          "FD",
+                          "PCT",
+                          "L",
+                          "ML",
+                          "G"
+                        ].map(u=>`
+
+                          <option
+
+                            ${
+                              (
+                                cache.unidade || "UN"
+                              ) === u
+
+                              ? "selected"
+
+                              : ""
+                            }
+
+                          >
+
+                            ${u}
+
+                          </option>
+
+                        `).join("")}
+
+                      </select>
 
                     </td>
 
@@ -840,11 +923,17 @@ function renderCotacoes(cotacoes){
                       <input
                         type="number"
 
-                        class="input"
+                        class="
+                          input
+                          center
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
                         value="${
                           cache.embalagem || 1
                         }"
+
+                        ${bloqueada ? "readonly" : ""}
 
                         oninput="
                           salvarLocal(
@@ -857,14 +946,65 @@ function renderCotacoes(cotacoes){
 
                     </td>
 
+                    <!-- PREÇO UNIT -->
+
+                    <td>
+
+                      <b style="
+                        color:#16a34a;
+                      ">
+
+                        ${
+                          precoUnit
+
+                          ? "R$ " +
+
+                            precoUnit
+                            .toFixed(2)
+                            .replace(".",",")
+
+                          : "-"
+                        }
+
+                      </b>
+
+                    </td>
+
+                    <!-- TOTAL -->
+
+                    <td>
+
+                      <b>
+
+                        ${
+                          total
+
+                          ? "R$ " +
+
+                            total
+                            .toFixed(2)
+                            .replace(".",",")
+
+                          : "-"
+                        }
+
+                      </b>
+
+                    </td>
+
                     <!-- PRAZO -->
 
                     <td>
 
                       <input
-                        class="input"
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
                         value="${cache.prazo || ""}"
+
+                        ${bloqueada ? "readonly" : ""}
 
                         oninput="
                           salvarLocal(
@@ -883,12 +1023,17 @@ function renderCotacoes(cotacoes){
 
                       <textarea
 
-                        class="input"
+                        class="
+                          input
+                          ${bloqueada ? "readonly" : ""}
+                        "
 
                         style="
                           min-height:38px;
                           resize:vertical;
                         "
+
+                        ${bloqueada ? "readonly" : ""}
 
                         oninput="
                           salvarLocal(
@@ -938,25 +1083,46 @@ function renderCotacoes(cotacoes){
 
         </div>
 
-        <!-- RODAPÉ -->
-
         <div class="actions">
 
-          <button
-            class="btn btn-light"
-            onclick="limpar('${c.id}')">
+          ${
+            bloqueada
 
-            Limpar
+            ? `
 
-          </button>
+              <div style="
+                font-size:13px;
+                font-weight:700;
+                color:#dc2626;
+              ">
 
-          <button
-            class="btn"
-            onclick="enviar('${c.id}')">
+                Cotação finalizada.
+                Edição bloqueada.
 
-            Enviar Cotação
+              </div>
 
-          </button>
+            `
+
+            : `
+
+              <button
+                class="btn btn-light"
+                onclick="limpar('${c.id}')">
+
+                Limpar
+
+              </button>
+
+              <button
+                class="btn"
+                onclick="enviar('${c.id}')">
+
+                Enviar Cotação
+
+              </button>
+
+            `
+          }
 
         </div>
 
@@ -987,6 +1153,8 @@ function salvarLocal(
     key,
     JSON.stringify(obj)
   );
+
+  carregarCotacoes();
 }
 
 /* ================= ENVIAR ================= */
@@ -1013,11 +1181,13 @@ async function enviar(cotacaoId){
     const item = itens[i];
 
     const fornecedorIndex =
+
       (item.fornecedores || [])
 
       .findIndex(f =>
 
-        f.fornecedor_id === fornecedor.id
+        f.fornecedor_id ===
+        fornecedor.id
 
       );
 
@@ -1033,11 +1203,28 @@ async function enviar(cotacaoId){
     );
 
     if(
-      !cache.preco ||
+      !cache.preco_embalagem ||
       !cache.marca
     ){
       continue;
     }
+
+    const precoEmb = Number(
+
+      String(cache.preco_embalagem)
+      .replace(/\./g,"")
+      .replace(",", ".")
+
+    );
+
+    const qtdEmb = Number(
+      cache.embalagem || 1
+    );
+
+    const precoUnit =
+      qtdEmb > 0
+      ? precoEmb / qtdEmb
+      : 0;
 
     item.fornecedores[
       fornecedorIndex
@@ -1047,18 +1234,15 @@ async function enviar(cotacaoId){
         fornecedorIndex
       ],
 
-      preco_unitario:Number(
-        String(cache.preco)
-        .replace(/\./g,"")
-        .replace(",", ".")
-      ),
+      preco_embalagem:
+        precoEmb,
+
+      preco_unitario:
+        precoUnit,
 
       preco_total:
+        precoUnit *
         Number(
-          String(cache.preco)
-          .replace(/\./g,"")
-          .replace(",", ".")
-        ) * Number(
           item.qtd_solicitada || 0
         ),
 
@@ -1075,9 +1259,7 @@ async function enviar(cotacaoId){
         cache.unidade || "UN",
 
       quantidade_embalagem:
-        Number(
-          cache.embalagem || 1
-        ),
+        qtdEmb,
 
       respondido_em:
         new Date()
