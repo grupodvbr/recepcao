@@ -1901,13 +1901,16 @@ async function enviar(cotacaoId){
       continue;
     }
 
-    const precoEmb = Number(
+const precoEmb = parseFloat(
 
-      String(cache.preco_embalagem)
-      .replace(/\./g,"")
-      .replace(",", ".")
+  String(
+    cache.preco_embalagem || 0
+  )
 
-    );
+  .replace(/\./g,'')
+  .replace(',','.')
+
+) || 0;
 
     const qtdEmb = Number(
       cache.embalagem || 1
@@ -2036,16 +2039,22 @@ function formatarData(data){
 
 function money(v){
 
-  v = v.replace(/\D/g,"");
+  if(!v) return '';
 
-  v = (Number(v)/100)
-    .toFixed(2);
+  v = String(v)
+    .replace(/\D/g,'');
 
-  return v
-    .replace(".",",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g,".");
+  v = (Number(v) / 100)
+    .toLocaleString('pt-BR',{
+
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+
+    });
+
+  return v;
+
 }
-
 /* ================= REALTIME ================= */
 
 sb.channel("cotacoes_realtime")
