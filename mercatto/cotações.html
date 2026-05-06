@@ -2057,11 +2057,17 @@ sb.channel("cotacoes_realtime")
     schema:"public",
     table:"cotacoes"
   },
-  payload => {
+payload => {
+
+  clearTimeout(window.reloadRealtime);
+
+  window.reloadRealtime = setTimeout(()=>{
 
     carregarCotacoes();
 
-  }
+  }, 1500);
+
+}
 )
 
 .subscribe();
