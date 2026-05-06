@@ -574,26 +574,35 @@ async function carregarCotacoes(){
     return;
   }
 
-  const filtradas = (data || [])
+ const filtradas = (data || [])
 
-    .filter(c => {
+  .filter(c => {
 
-      const itens =
-        c.itens_cotacao || [];
+    /* NÃO MOSTRA FINALIZADAS */
 
-      return itens.some(i => {
+    if(
+      String(c.status || '')
+      .toUpperCase() === 'FINALIZADA'
+    ){
+      return false;
+    }
 
-        return (
-          i.fornecedores || []
-        ).some(f =>
+    const itens =
+      c.itens_cotacao || [];
 
-          f.fornecedor_id === fornecedor.id
+    return itens.some(i => {
 
-        );
+      return (
+        i.fornecedores || []
+      ).some(f =>
 
-      });
+        f.fornecedor_id === fornecedor.id
+
+      );
 
     });
+
+  });
 
   renderCotacoes(filtradas);
 }
