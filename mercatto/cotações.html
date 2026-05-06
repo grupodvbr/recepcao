@@ -1,350 +1,586 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Portal do Fornecedor • Mercatto</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Registro Operacional • Mercatto</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
+/* =====================================================
+ROOT
+===================================================== */
+
 :root{
-  --bg:#f5f6f8;
+
+  --bg:#f3f5f9;
+
   --card:#ffffff;
-  --line:#e5e7eb;
-  --text:#111827;
-  --muted:#6b7280;
-  --primary:#111827;
+
+  --line:#e2e8f0;
+
+  --text:#0f172a;
+
+  --muted:#64748b;
+
+  --primary:#0f172a;
+
+  --primary2:#1e293b;
+
   --green:#16a34a;
-  --yellow:#ca8a04;
+
   --red:#dc2626;
+
+  --yellow:#ca8a04;
+
+  --shadow:
+  0 4px 20px rgba(15,23,42,.05);
+
 }
+
+/* =====================================================
+BASE
+===================================================== */
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Inter;
+  font-family:'Inter',sans-serif;
+}
+
+html,
+body{
+
+  width:100%;
+  height:100%;
+
+  overflow:hidden;
+
+  background:var(--bg);
+
+  color:var(--text);
+
 }
 
 body{
-  background:var(--bg);
-  color:var(--text);
-}
 
-/* ================= LOGIN ================= */
-
-.login{
-  min-height:100vh;
   display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
+  flex-direction:column;
+
 }
 
-.login-card{
-  width:100%;
-  max-width:420px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:28px;
-}
+/* =====================================================
+TOPO
+===================================================== */
 
-.logo{
-  width:60px;
-  height:60px;
-  border-radius:14px;
-  background:#111827;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  font-weight:800;
-  margin-bottom:20px;
-}
+.topo{
 
-.login-card h1{
-  font-size:26px;
-  margin-bottom:8px;
-}
+  background:white;
 
-.login-card p{
-  color:var(--muted);
-  margin-bottom:20px;
-  font-size:14px;
-}
-
-.login-card input{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:10px;
-  padding:12px;
-  margin-bottom:12px;
-  outline:none;
-}
-
-.login-card button{
-  width:100%;
-  border:none;
-  background:#111827;
-  color:#fff;
-  padding:13px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:700;
-}
-
-/* ================= APP ================= */
-
-.app{
-  display:none;
-}
-
-/* ================= TOPO ================= */
-
-.top{
-  background:#fff;
   border-bottom:1px solid var(--line);
-  padding:14px 18px;
-  position:sticky;
-  top:0;
-  z-index:100;
+
+  box-shadow:var(--shadow);
+
+  z-index:999;
+
 }
 
-.top-flex{
+.top-header{
+
+  background:
+  linear-gradient(
+    90deg,
+    var(--primary),
+    var(--primary2)
+  );
+
+  padding:16px 22px;
+
   display:flex;
-  justify-content:space-between;
+
   align-items:center;
+
+  justify-content:space-between;
+
   gap:20px;
-  flex-wrap:wrap;
+
 }
 
-.top h1{
+.left-top{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:4px;
+
+}
+
+.left-top h1{
+
+  color:white;
+
   font-size:22px;
-  font-weight:800;
+
+  font-weight:900;
+
+  letter-spacing:.3px;
+
 }
 
-.top small{
-  color:var(--muted);
+.left-top span{
+
+  color:rgba(255,255,255,.7);
+
+  font-size:13px;
+
+  font-weight:500;
+
 }
 
 .top-actions{
+
   display:flex;
+
   gap:10px;
+
 }
 
 .btn{
+
   border:none;
-  background:#111827;
-  color:#fff;
-  padding:10px 14px;
+
+  height:42px;
+
+  padding:0 18px;
+
   border-radius:10px;
-  cursor:pointer;
+
   font-size:13px;
-  font-weight:700;
+
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:.15s;
+
 }
 
-.btn-red{
-  background:#dc2626;
+.btn-dark{
+
+  background:#111827;
+
+  color:white;
+
 }
 
 .btn-light{
-  background:#f3f4f6;
+
+  background:white;
+
   color:#111827;
+
 }
 
-/* ================= CONTAINER ================= */
+.btn:hover{
+
+  transform:translateY(-1px);
+
+  opacity:.96;
+
+}
+
+/* =====================================================
+RESUMO
+===================================================== */
+
+.resumo{
+
+  display:grid;
+
+  grid-template-columns:
+
+  340px
+  1fr
+  1fr
+  1fr
+  1fr;
+
+}
+
+.card-resumo{
+
+  min-height:88px;
+
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+
+  padding:14px 18px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  background:white;
+
+}
+
+.card-resumo:last-child{
+  border-right:none;
+}
+
+.label{
+
+  font-size:11px;
+
+  font-weight:800;
+
+  text-transform:uppercase;
+
+  letter-spacing:.6px;
+
+  color:var(--muted);
+
+  margin-bottom:8px;
+
+}
+
+.valor{
+
+  font-size:31px;
+
+  font-weight:900;
+
+  line-height:1;
+
+}
+
+.empresa{
+
+  background:#fafafa;
+
+  align-items:center;
+
+  justify-content:center;
+
+}
+
+.empresa .valor{
+
+  font-size:28px;
+
+  text-align:center;
+
+}
+
+.green{
+  color:var(--green);
+}
+
+.red{
+  color:var(--red);
+}
+
+.yellow{
+  color:var(--yellow);
+}
+
+/* =====================================================
+FILTROS
+===================================================== */
+
+.filtros{
+
+  background:white;
+
+  padding:14px;
+
+  display:grid;
+
+  grid-template-columns:
+
+  180px
+  180px
+  220px
+  1fr
+  180px;
+
+  gap:12px;
+
+  border-bottom:1px solid var(--line);
+
+}
+
+.input,
+.select{
+
+  width:100%;
+
+  height:48px;
+
+  border:1px solid var(--line);
+
+  border-radius:12px;
+
+  background:#f8fafc;
+
+  padding:0 14px;
+
+  outline:none;
+
+  font-size:14px;
+
+  font-weight:600;
+
+  color:var(--text);
+
+}
+
+.input:focus,
+.select:focus{
+
+  border-color:#2563eb;
+
+  background:white;
+
+  box-shadow:
+  0 0 0 4px rgba(37,99,235,.08);
+
+}
+
+/* =====================================================
+CONTAINER
+===================================================== */
 
 .container{
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+
+  flex:1;
+
+  overflow:auto;
+
+  background:white;
+
 }
 
-/* ================= CARD ================= */
-
-.card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:14px;
-  overflow:hidden;
-}
-
-/* ================= HEADER ================= */
-
-.card-top{
-  padding:14px 18px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  flex-wrap:wrap;
-  background:#fafafa;
-}
-
-.card-top h2{
-  font-size:17px;
-  margin-bottom:4px;
-}
-
-.card-top small{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* ================= STATUS ================= */
-
-.status{
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:700;
-}
-
-.ativa{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.respondida{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.finalizada{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-/* ================= TABELA ================= */
+/* =====================================================
+TABELA
+===================================================== */
 
 .table-wrap{
-  overflow:auto;
+
+  min-width:1800px;
+
 }
 
 table{
+
   width:100%;
+
   border-collapse:collapse;
-  min-width:1900px;
+
 }
+
+/* =====================================================
+HEAD
+===================================================== */
 
 thead{
-  background:#f9fafb;
+
+  position:sticky;
+
+  top:0;
+
+  z-index:50;
+
 }
 
-th{
-  padding:10px 12px;
+thead th{
+
+  background:#f8fafc;
+
   border-bottom:1px solid var(--line);
   border-right:1px solid var(--line);
+
+  padding:14px 12px;
+
   text-align:left;
+
   font-size:11px;
-  font-weight:700;
-  color:#6b7280;
+
+  font-weight:900;
+
+  text-transform:uppercase;
+
+  letter-spacing:.5px;
+
+  color:#475569;
+
   white-space:nowrap;
+
 }
 
-td{
-  padding:8px 12px;
-  border-bottom:1px solid #f1f5f9;
-  border-right:1px solid #f1f5f9;
-  vertical-align:top;
+thead th:last-child{
+  border-right:none;
+}
+
+/* =====================================================
+BODY
+===================================================== */
+
+tbody{
+
+  transition:
+  opacity .18s ease;
+
+}
+
+tbody tr{
+
+  transition:.12s;
+
+}
+
+tbody tr:hover td{
+
+  background:#f8fbff;
+
+}
+
+tbody td{
+
+  padding:12px;
+
+  border-bottom:1px solid #edf2f7;
+  border-right:1px solid #edf2f7;
+
   font-size:13px;
+
+  white-space:nowrap;
+
+  vertical-align:middle;
+
+  background:white;
+
 }
 
-tr:hover td{
-  background:#fafafa;
+tbody td:last-child{
+  border-right:none;
 }
 
-/* ================= INPUT ================= */
+tbody tr:nth-child(even) td{
 
-.input{
-  width:100%;
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:8px 10px;
-  font-size:13px;
-  outline:none;
+  background:#fbfcfe;
+
 }
 
-.input:focus{
-  border-color:#111827;
+/* =====================================================
+BADGES
+===================================================== */
+
+.badge{
+
+  padding:7px 12px;
+
+  border-radius:999px;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  width:max-content;
+
 }
 
-.money{
-  text-align:right;
+.badge-green{
+
+  background:#dcfce7;
+
+  color:#166534;
+
 }
+
+.badge-red{
+
+  background:#fee2e2;
+
+  color:#991b1b;
+
+}
+
+.badge-yellow{
+
+  background:#fef3c7;
+
+  color:#92400e;
+
+}
+
+/* =====================================================
+ALINHAMENTO
+===================================================== */
 
 .center{
   text-align:center;
 }
 
-.readonly{
-  background:#f9fafb;
-  cursor:not-allowed;
+.right{
+  text-align:right;
 }
 
-/* ================= BADGE ================= */
+/* =====================================================
+LOADING
+===================================================== */
 
-.badge{
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:700;
-  width:max-content;
-}
+.loading{
 
-.pending{
-  background:#fef3c7;
-  color:#92400e;
-}
+  padding:28px;
 
-.done{
-  background:#dcfce7;
-  color:#166534;
-}
-
-/* ================= FOOTER ================= */
-
-.actions{
-  padding:14px 18px;
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-  background:#fafafa;
-}
-
-/* ================= EMPTY ================= */
-
-.empty{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:60px;
   text-align:center;
-  color:#6b7280;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  color:var(--muted);
+
 }
 
-/* ================= OVERLAY ================= */
+/* =====================================================
+SCROLL
+===================================================== */
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(255,255,255,.6);
-  backdrop-filter:blur(4px);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  font-weight:800;
-  font-size:20px;
+.container::-webkit-scrollbar{
+  width:10px;
+  height:10px;
+}
+
+.container::-webkit-scrollbar-thumb{
+  background:#cbd5e1;
+  border-radius:20px;
+}
+
+/* =====================================================
+RESPONSIVO
+===================================================== */
+
+@media(max-width:1450px){
+
+  .filtros{
+
+    grid-template-columns:
+    1fr 1fr;
+
+  }
+
 }
 
 </style>
@@ -352,1038 +588,380 @@ tr:hover td{
 
 <body>
 
-<!-- LOGIN -->
+<!-- =====================================================
+TOPO
+===================================================== -->
 
-<div class="login" id="login">
+<div class="topo">
 
-  <div class="login-card">
+  <div class="top-header">
 
-    <div class="logo">
-      M
+    <div class="left-top">
+
+      <h1>
+        REGISTRO OPERACIONAL
+      </h1>
+
+      <span>
+        Painel analítico completo • Mercatto
+      </span>
+
     </div>
 
-    <h1>Portal do Fornecedor</h1>
+    <div class="top-actions">
 
-    <p>
-      Acesse suas cotações
-    </p>
+      <button
+        class="btn btn-light">
+
+        EXPORTAR
+
+      </button>
+
+      <button
+        class="btn btn-dark">
+
+        ATUALIZAR
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================
+  RESUMO
+  ===================================================== -->
+
+  <div class="resumo">
+
+    <div class="card-resumo empresa">
+
+      <div class="label">
+        EMPRESA
+      </div>
+
+      <div class="valor">
+        DELÍCIA GOURMET
+      </div>
+
+    </div>
+
+    <div class="card-resumo">
+
+      <div class="label">
+        TOTAL REGISTROS
+      </div>
+
+      <div class="valor">
+        1.250
+      </div>
+
+    </div>
+
+    <div class="card-resumo">
+
+      <div class="label">
+        PENDENTES
+      </div>
+
+      <div class="valor yellow">
+        210
+      </div>
+
+    </div>
+
+    <div class="card-resumo">
+
+      <div class="label">
+        FINALIZADOS
+      </div>
+
+      <div class="valor green">
+        980
+      </div>
+
+    </div>
+
+    <div class="card-resumo">
+
+      <div class="label">
+        CANCELADOS
+      </div>
+
+      <div class="valor red">
+        60
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- =====================================================
+  FILTROS
+  ===================================================== -->
+
+  <div class="filtros">
 
     <input
-      id="cnpj"
-      placeholder="CNPJ"
-    >
+      class="input"
+      type="date">
 
     <input
-      id="senha"
-      type="password"
-      placeholder="Senha"
-    >
+      class="input"
+      type="date">
 
-    <button onclick="entrar()">
-      Entrar
+    <select class="select">
+
+      <option>
+        Todas Empresas
+      </option>
+
+      <option>
+        Mercatto Delícia
+      </option>
+
+      <option>
+        Delícia Gourmet
+      </option>
+
+      <option>
+        Villa Gourmet
+      </option>
+
+    </select>
+
+    <input
+      class="input"
+      placeholder="Buscar registro...">
+
+    <button
+      class="btn btn-dark">
+
+      FILTRAR
+
     </button>
 
   </div>
 
 </div>
 
-<!-- APP -->
+<!-- =====================================================
+CONTAINER
+===================================================== -->
 
-<div class="app" id="app">
+<div class="container">
 
-  <div class="top">
+  <div class="table-wrap">
 
-    <div class="top-flex">
+    <table>
 
-      <div>
+      <thead>
 
-        <h1 id="nomeFornecedor">
-          Fornecedor
-        </h1>
+        <tr>
 
-        <small id="infoFornecedor"></small>
+          <th>
+            Data Registro
+          </th>
 
-      </div>
+          <th>
+            Empresa
+          </th>
 
-      <div class="top-actions">
+          <th>
+            Responsável
+          </th>
 
-        <button
-          class="btn"
-          onclick="carregarCotacoes()">
+          <th>
+            Categoria
+          </th>
 
-          Atualizar
+          <th>
+            Descrição
+          </th>
 
-        </button>
+          <th>
+            Quantidade
+          </th>
 
-        <button
-          class="btn btn-red"
-          onclick="sair()">
+          <th>
+            Valor
+          </th>
 
-          Sair
+          <th>
+            Status
+          </th>
 
-        </button>
+          <th>
+            Observação
+          </th>
 
-      </div>
+          <th>
+            Última Atualização
+          </th>
 
-    </div>
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <tr>
+
+          <td>
+            06/05/2026
+          </td>
+
+          <td>
+            Delícia Gourmet
+          </td>
+
+          <td>
+            Maria Oliveira
+          </td>
+
+          <td>
+            Compras
+          </td>
+
+          <td>
+            Compra de hortifruti
+          </td>
+
+          <td class="center">
+            42
+          </td>
+
+          <td class="right">
+            R$ 1.280,00
+          </td>
+
+          <td>
+
+            <div class="badge badge-green">
+              FINALIZADO
+            </div>
+
+          </td>
+
+          <td>
+            Entrega concluída
+          </td>
+
+          <td>
+            06/05/2026 14:32
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>
+            06/05/2026
+          </td>
+
+          <td>
+            Villa Gourmet
+          </td>
+
+          <td>
+            João Pedro
+          </td>
+
+          <td>
+            Estoque
+          </td>
+
+          <td>
+            Ajuste de inventário
+          </td>
+
+          <td class="center">
+            15
+          </td>
+
+          <td class="right">
+            R$ 340,00
+          </td>
+
+          <td>
+
+            <div class="badge badge-yellow">
+              PENDENTE
+            </div>
+
+          </td>
+
+          <td>
+            Aguardando conferência
+          </td>
+
+          <td>
+            06/05/2026 15:10
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>
+            05/05/2026
+          </td>
+
+          <td>
+            Mercatto Delícia
+          </td>
+
+          <td>
+            Carlos Lima
+          </td>
+
+          <td>
+            Financeiro
+          </td>
+
+          <td>
+            Ajuste de caixa
+          </td>
+
+          <td class="center">
+            3
+          </td>
+
+          <td class="right">
+            R$ 180,00
+          </td>
+
+          <td>
+
+            <div class="badge badge-red">
+              CANCELADO
+            </div>
+
+          </td>
+
+          <td>
+            Divergência encontrada
+          </td>
+
+          <td>
+            05/05/2026 19:02
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
 
   </div>
 
-  <div
-    class="container"
-    id="listaCotacoes">
+  <div class="loading">
+
+    Carregando registros...
+
   </div>
 
 </div>
-
-<!-- OVERLAY -->
-
-<div
-  class="overlay"
-  id="overlay">
-
-  Processando...
-
-</div>
-
-<script>
-
-const sb = supabase.createClient(
-  "https://dxkszikemntfusfyrzos.supabase.co",
-  "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
-);
-
-let fornecedor = JSON.parse(
-  localStorage.getItem("fornecedor_logado")
-);
-
-if(fornecedor){
-  iniciar();
-}
-
-/* ================= LOGIN ================= */
-
-async function entrar(){
-
-  const cnpj = document
-    .getElementById("cnpj")
-    .value
-    .replace(/\D/g,"");
-
-  const senha = document
-    .getElementById("senha")
-    .value
-    .trim();
-
-  overlay(true);
-
-  const { data } = await sb
-
-    .from("fornecedores_mercatto")
-
-    .select("*")
-    .eq("ativo", true);
-
-  overlay(false);
-
-  const encontrado = (data || [])
-
-    .find(f => {
-
-      return (
-
-        String(f.cnpj || "")
-        .replace(/\D/g,"")
-
-        === cnpj
-
-        &&
-
-        String(f.senha || "")
-        .trim()
-
-        === senha
-
-      );
-
-    });
-
-  if(!encontrado){
-
-    alert(
-      "CNPJ ou senha inválidos"
-    );
-
-    return;
-  }
-
-  fornecedor = encontrado;
-
-  localStorage.setItem(
-    "fornecedor_logado",
-    JSON.stringify(fornecedor)
-  );
-
-  iniciar();
-}
-
-/* ================= INICIAR ================= */
-
-async function iniciar(){
-
-  document.getElementById("login")
-    .style.display = "none";
-
-  document.getElementById("app")
-    .style.display = "block";
-
-  document.getElementById("nomeFornecedor")
-    .innerText = fornecedor.nome;
-
-  document.getElementById("infoFornecedor")
-    .innerText = fornecedor.cnpj;
-
-  await carregarCotacoes();
-}
-
-/* ================= COTAÇÕES ================= */
-
-async function carregarCotacoes(){
-
-  overlay(true);
-
-  const { data, error } = await sb
-
-    .from("cotacoes")
-
-    .select("*")
-
-    .order(
-      "data_cotacao",
-      { ascending:false }
-    );
-
-  overlay(false);
-
-  if(error){
-
-    console.log(error);
-
-    alert("Erro ao carregar");
-
-    return;
-  }
-
- const filtradas = (data || [])
-
-  .filter(c => {
-
-    /* NÃO MOSTRA FINALIZADAS */
-
-    if(
-      String(c.status || '')
-      .toUpperCase() === 'FINALIZADA'
-    ){
-      return false;
-    }
-
-    const itens =
-      c.itens_cotacao || [];
-
-    return itens.some(i => {
-
-      return (
-        i.fornecedores || []
-      ).some(f =>
-
-        f.fornecedor_id === fornecedor.id
-
-      );
-
-    });
-
-  });
-
-  renderCotacoes(filtradas);
-}
-
-/* ================= RENDER ================= */
-
-function renderCotacoes(cotacoes){
-
-  const lista =
-    document.getElementById(
-      "listaCotacoes"
-    );
-
-  lista.innerHTML = "";
-
-  if(!cotacoes.length){
-
-    lista.innerHTML = `
-
-      <div class="empty">
-
-        Nenhuma cotação disponível
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  cotacoes.forEach(c => {
-
-    const itens =
-      c.itens_cotacao || [];
-
-    const bloqueada =
-      c.status === "finalizada";
-
-    lista.innerHTML += `
-
-      <div class="card">
-
-        <div class="card-top">
-
-          <div>
-
-            <h2>
-              ${c.nome || "Cotação"}
-            </h2>
-
-            <small>
-              ${formatarData(c.data_cotacao)}
-            </small>
-
-          </div>
-
-          <div class="
-            status
-
-            ${
-              c.status === "finalizada"
-              ? "finalizada"
-
-              : c.status === "respondida"
-              ? "respondida"
-
-              : "ativa"
-            }
-          ">
-
-            ${(c.status || "ativa")
-              .toUpperCase()}
-
-          </div>
-
-        </div>
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-
-                <th>Produto</th>
-                <th>Qtd</th>
-                <th>Und. Solic.</th>
-                <th>Marca</th>
-                <th>Preço Emb.</th>
-                <th>Unidade</th>
-                <th>Qtd Emb.</th>
-                <th>Preço Unit.</th>
-                <th>Total</th>
-                <th>Prazo</th>
-                <th>Observação</th>
-                <th>Status</th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-
-              ${itens.map((i,index)=>{
-
-                const meuFornecedor =
-
-                  (i.fornecedores || [])
-
-                  .find(f =>
-
-                    f.fornecedor_id ===
-                    fornecedor.id
-
-                  );
-
-                if(!meuFornecedor)
-                  return "";
-
-                const key =
-                  "cot_"+c.id+"_"+index;
-
-                const cache = JSON.parse(
-
-                  localStorage.getItem(key)
-
-                  || JSON.stringify({
-
-                    preco_embalagem:
-                      meuFornecedor.preco_embalagem || "",
-
-                    marca:
-                      meuFornecedor.marca || "",
-
-                    obs:
-                      meuFornecedor.observacao || "",
-
-                    prazo:
-                      meuFornecedor.prazo || "",
-
-                    unidade:
-                      meuFornecedor.unidade || i.unidade || "UN",
-
-                    embalagem:
-                      meuFornecedor.quantidade_embalagem || 1
-
-                  })
-
-                );
-
-                const qtdEmb =
-                  Number(
-                    cache.embalagem || 1
-                  );
-
-                const precoEmb =
-                  Number(
-
-                    String(
-                      cache.preco_embalagem || 0
-                    )
-
-                    .replace(/\./g,"")
-                    .replace(",", ".")
-
-                  );
-
-                const precoUnit =
-                  qtdEmb > 0
-                  ? precoEmb / qtdEmb
-                  : 0;
-
-                const total =
-                  precoUnit *
-                  Number(i.qtd_solicitada || 0);
-
-                return `
-
-                  <tr>
-
-                    <!-- PRODUTO -->
-
-                    <td>
-
-                      <b>
-                        ${i.produto}
-                      </b>
-
-                    </td>
-
-                    <!-- QTD -->
-
-                    <td class="center">
-
-                      ${i.qtd_solicitada || 0}
-
-                    </td>
-
-                    <!-- UND -->
-
-                    <td>
-
-                      <b>
-                        ${i.unidade || "UN"}
-                      </b>
-
-                    </td>
-
-                    <!-- MARCA -->
-
-                    <td>
-
-                      <input
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        value="${cache.marca || ""}"
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'marca',
-                            this.value
-                          )
-                        "
-                      >
-
-                    </td>
-
-                    <!-- PREÇO EMB -->
-
-                    <td>
-
-                      <input
-                        class="
-                          input
-                          money
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        value="${
-                          cache.preco_embalagem || ""
-                        }"
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          this.value =
-                            money(this.value);
-
-                          salvarLocal(
-                            '${key}',
-                            'preco_embalagem',
-                            this.value
-                          )
-                        "
-                      >
-
-                    </td>
-
-                    <!-- UNIDADE -->
-
-                    <td>
-
-                      <select
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        ${bloqueada ? "disabled" : ""}
-
-                        onchange="
-                          salvarLocal(
-                            '${key}',
-                            'unidade',
-                            this.value
-                          )
-                        "
-
-                      >
-
-                        ${[
-                          "UN",
-                          "CX",
-                          "KG",
-                          "FD",
-                          "PCT",
-                          "L",
-                          "ML",
-                          "G"
-                        ].map(u=>`
-
-                          <option
-
-                            ${
-                              (
-                                cache.unidade || "UN"
-                              ) === u
-
-                              ? "selected"
-
-                              : ""
-                            }
-
-                          >
-
-                            ${u}
-
-                          </option>
-
-                        `).join("")}
-
-                      </select>
-
-                    </td>
-
-                    <!-- EMB -->
-
-                    <td>
-
-                      <input
-                        type="number"
-
-                        class="
-                          input
-                          center
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        value="${
-                          cache.embalagem || 1
-                        }"
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'embalagem',
-                            this.value
-                          )
-                        "
-                      >
-
-                    </td>
-
-                    <!-- PREÇO UNIT -->
-
-                    <td>
-
-                      <b style="
-                        color:#16a34a;
-                      ">
-
-                        ${
-                          precoUnit
-
-                          ? "R$ " +
-
-                            precoUnit
-                            .toFixed(2)
-                            .replace(".",",")
-
-                          : "-"
-                        }
-
-                      </b>
-
-                    </td>
-
-                    <!-- TOTAL -->
-
-                    <td>
-
-                      <b>
-
-                        ${
-                          total
-
-                          ? "R$ " +
-
-                            total
-                            .toFixed(2)
-                            .replace(".",",")
-
-                          : "-"
-                        }
-
-                      </b>
-
-                    </td>
-
-                    <!-- PRAZO -->
-
-                    <td>
-
-                      <input
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        value="${cache.prazo || ""}"
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'prazo',
-                            this.value
-                          )
-                        "
-                      >
-
-                    </td>
-
-                    <!-- OBS -->
-
-                    <td>
-
-                      <textarea
-
-                        class="
-                          input
-                          ${bloqueada ? "readonly" : ""}
-                        "
-
-                        style="
-                          min-height:38px;
-                          resize:vertical;
-                        "
-
-                        ${bloqueada ? "readonly" : ""}
-
-                        oninput="
-                          salvarLocal(
-                            '${key}',
-                            'obs',
-                            this.value
-                          )
-                        "
-
-                      >${cache.obs || ""}</textarea>
-
-                    </td>
-
-                    <!-- STATUS -->
-
-                    <td>
-
-                      <div class="
-                        badge
-
-                        ${
-                          meuFornecedor.preco_unitario
-                          ? "done"
-                          : "pending"
-                        }
-                      ">
-
-                        ${
-                          meuFornecedor.preco_unitario
-                          ? "RESPONDIDO"
-                          : "PENDENTE"
-                        }
-
-                      </div>
-
-                    </td>
-
-                  </tr>
-
-                `;
-
-              }).join("")}
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-        <div class="actions">
-
-          ${
-            bloqueada
-
-            ? `
-
-              <div style="
-                font-size:13px;
-                font-weight:700;
-                color:#dc2626;
-              ">
-
-                Cotação finalizada.
-                Edição bloqueada.
-
-              </div>
-
-            `
-
-            : `
-
-              <button
-                class="btn btn-light"
-                onclick="limpar('${c.id}')">
-
-                Limpar
-
-              </button>
-
-              <button
-                class="btn"
-                onclick="enviar('${c.id}')">
-
-                Enviar Cotação
-
-              </button>
-
-            `
-          }
-
-        </div>
-
-      </div>
-
-    `;
-
-  });
-
-}
-
-/* ================= LOCAL ================= */
-
-function salvarLocal(
-  key,
-  campo,
-  valor
-){
-
-  let obj = JSON.parse(
-    localStorage.getItem(key)
-    || "{}"
-  );
-
-  obj[campo] = valor;
-
-  localStorage.setItem(
-    key,
-    JSON.stringify(obj)
-  );
-
-  carregarCotacoes();
-}
-
-/* ================= ENVIAR ================= */
-
-async function enviar(cotacaoId){
-
-  overlay(true);
-
-  const { data } = await sb
-
-    .from("cotacoes")
-
-    .select("*")
-
-    .eq("id", cotacaoId)
-
-    .single();
-
-  let itens =
-    data.itens_cotacao || [];
-
-  for(let i=0; i<itens.length; i++){
-
-    const item = itens[i];
-
-    const fornecedorIndex =
-
-      (item.fornecedores || [])
-
-      .findIndex(f =>
-
-        f.fornecedor_id ===
-        fornecedor.id
-
-      );
-
-    if(fornecedorIndex === -1)
-      continue;
-
-    const key =
-      "cot_"+cotacaoId+"_"+i;
-
-    const cache = JSON.parse(
-      localStorage.getItem(key)
-      || "{}"
-    );
-
-    if(
-      !cache.preco_embalagem ||
-      !cache.marca
-    ){
-      continue;
-    }
-
-    const precoEmb = Number(
-
-      String(cache.preco_embalagem)
-      .replace(/\./g,"")
-      .replace(",", ".")
-
-    );
-
-    const qtdEmb = Number(
-      cache.embalagem || 1
-    );
-
-    const precoUnit =
-      qtdEmb > 0
-      ? precoEmb / qtdEmb
-      : 0;
-
-    item.fornecedores[
-      fornecedorIndex
-    ] = {
-
-      ...item.fornecedores[
-        fornecedorIndex
-      ],
-
-      preco_embalagem:
-        precoEmb,
-
-      preco_unitario:
-        precoUnit,
-
-      preco_total:
-        precoUnit *
-        Number(
-          item.qtd_solicitada || 0
-        ),
-
-      marca:
-        cache.marca || "",
-
-      observacao:
-        cache.obs || "",
-
-      prazo:
-        cache.prazo || "",
-
-      unidade:
-        cache.unidade || "UN",
-
-      quantidade_embalagem:
-        qtdEmb,
-
-      respondido_em:
-        new Date()
-
-    };
-
-  }
-
-  await sb
-
-    .from("cotacoes")
-
-    .update({
-
-      itens_cotacao:itens,
-      atualizado_em:new Date(),
-      status:"respondida"
-
-    })
-
-    .eq("id", cotacaoId);
-
-  overlay(false);
-
-  alert(
-    "Cotação enviada com sucesso"
-  );
-
-  carregarCotacoes();
-}
-
-/* ================= LIMPAR ================= */
-
-function limpar(cotacaoId){
-
-  Object.keys(localStorage)
-
-    .filter(k =>
-
-      k.startsWith(
-        "cot_"+cotacaoId+"_"
-      )
-
-    )
-
-    .forEach(k => {
-
-      localStorage.removeItem(k);
-
-    });
-
-  carregarCotacoes();
-}
-
-/* ================= SAIR ================= */
-
-function sair(){
-
-  localStorage.removeItem(
-    "fornecedor_logado"
-  );
-
-  location.reload();
-}
-
-/* ================= HELPERS ================= */
-
-function overlay(show){
-
-  document.getElementById("overlay")
-    .style.display =
-      show ? "flex" : "none";
-}
-
-function formatarData(data){
-
-  if(!data) return "-";
-
-  return new Date(data)
-    .toLocaleString("pt-BR");
-}
-
-function money(v){
-
-  v = v.replace(/\D/g,"");
-
-  v = (Number(v)/100)
-    .toFixed(2);
-
-  return v
-    .replace(".",",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g,".");
-}
-
-/* ================= REALTIME ================= */
-
-sb.channel("cotacoes_realtime")
-
-.on(
-  "postgres_changes",
-  {
-    event:"UPDATE",
-    schema:"public",
-    table:"cotacoes"
-  },
-  payload => {
-
-    carregarCotacoes();
-
-  }
-)
-
-.subscribe();
-
-</script>
 
 </body>
 </html>
